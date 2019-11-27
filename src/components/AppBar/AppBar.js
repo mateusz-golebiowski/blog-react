@@ -5,7 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
-
+import {NavLink} from "react-router-dom";
 
 
 
@@ -90,12 +90,19 @@ export default function BlogAppBar(props) {
         <div className={classes.root}>
             <AppBar position="fixed" >
                     <Toolbar>
+                        <NavLink to="/" exact activeClassName="active">
+                            <Button color="secondary" className={classes.button}>
+                                Strona główna
+                            </Button>
+                        </NavLink>
                         <Button color="secondary" className={classes.button}>
                             Zaloguj się
                         </Button>
+                        <NavLink to="/post/3" exact activeClassName="active">
                         <Button color="secondary" className={classes.button}>
                             O mnie
                         </Button>
+                        </NavLink>
                         <Button color="secondary" className={classes.button}>
                             Kontakt
                         </Button>

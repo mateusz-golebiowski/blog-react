@@ -10,6 +10,8 @@ import './App.css';
 
 import MainPage from "../MainPage/MainPage";
 import PostPage from "../PostPage/PostPage";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 
 const theme = createMuiTheme({
         palette: {
@@ -77,8 +79,14 @@ function App() {
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <CssBaseline />
-          <BlogAppBar/>
-        <MainPage/>
+           <Router>
+            <BlogAppBar/>
+            <Switch>
+                <Route path="/" exact component={MainPage} />
+                <Route path="/post/:id" component={PostPage} />
+                <Route path="/signIn" component={MainPage} />
+            </Switch>
+          </Router>
 
         </div>
       </MuiThemeProvider>
