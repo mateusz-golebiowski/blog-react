@@ -95,17 +95,19 @@ export default function BlogAppBar(props) {
                                 Strona główna
                             </Button>
                         </NavLink>
-                        <Button color="secondary" className={classes.button}>
-                            Zaloguj się
-                        </Button>
-                        <NavLink to="/post/3" exact activeClassName="active">
-                        <Button color="secondary" className={classes.button}>
-                            O mnie
-                        </Button>
+                        <NavLink to="/signIn" activeClassName="active">
+                            <Button color="secondary" className={classes.button}>
+                                Zaloguj się
+                            </Button>
                         </NavLink>
-                        <Button color="secondary" className={classes.button}>
-                            Kontakt
-                        </Button>
+                        <NavLink to="/post/3" exact activeClassName="active">
+                            <Button color="secondary" className={classes.button}>
+                                O mnie
+                            </Button>
+                        </NavLink>
+                            <Button color="secondary" className={classes.button}>
+                                Kontakt
+                            </Button>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                 <SearchIcon />

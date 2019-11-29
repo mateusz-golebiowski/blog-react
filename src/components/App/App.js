@@ -10,6 +10,7 @@ import './App.css';
 
 import MainPage from "../MainPage/MainPage";
 import PostPage from "../PostPage/PostPage";
+import SignInPage from "../SignInPage/SignInPage";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
@@ -75,6 +76,8 @@ const tileData = [
 
 function App() {
     const classes = styles(theme);
+
+    console.log(localStorage.getItem('token'));
   return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
@@ -84,7 +87,7 @@ function App() {
             <Switch>
                 <Route path="/" exact component={MainPage} />
                 <Route path="/post/:id" component={PostPage} />
-                <Route path="/signIn" component={MainPage} />
+                <Route path="/signIn" component={SignInPage} />
             </Switch>
           </Router>
 
