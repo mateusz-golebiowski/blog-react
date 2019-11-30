@@ -12,7 +12,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import {isUserSignedIn, setUserToken} from "../../lib/user";
+import {Redirect} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -36,19 +37,16 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const SignInPage = () => {
+const SignInPage = (props) => {
     const classes = useStyles();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const SignIn = (e) => {
-        console.log(username);
-        console.log(password);
         const data = {
             username,
             password
         };
-        console.log(JSON.stringify(data));
         fetch('http://127.0.0.1:4000/api/v1/user/signIn', {
             method: 'post',
             headers: {
@@ -59,9 +57,9 @@ const SignInPage = () => {
         }).then(function(response) {
             return response.json();
         }).then(function(data) {
-            console.log(data);
             if(data.auth) {
-                localStorage.setItem('token', data.token);
+                setUserToken(data.token);
+                props.setUserToken(data.token);
             }
         });
         e.preventDefault();
@@ -73,9 +71,20 @@ const SignInPage = () => {
         setPassword(event.target.value);
     };
 
+    const isSignedIn = () => {
+        if(isUserSignedIn()) {
+            return (
+                <Redirect to={'/'}/>
+            )
+        } else {
+            return null;
+        }
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            {isSignedIn()}
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />

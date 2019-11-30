@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import {NavLink} from "react-router-dom";
 
+import {isUserSignedIn, signOut} from "../../lib/user";
 
 
 const useStyles = makeStyles(theme => ({
@@ -85,6 +86,29 @@ const useStyles = makeStyles(theme => ({
 
 export default function BlogAppBar(props) {
     const classes = useStyles();
+    const handleSignOut = () => {
+      signOut();
+      props.setUserToken('');
+    };
+    const loginButton = () => {
+        if (props.userToken !== '') {
+            return (
+                <Button onClick={handleSignOut} color="secondary" className={classes.button}>
+                    Wyloguj się
+                </Button>
+
+            );
+        } else {
+            return (
+                <NavLink to="/signIn" activeClassName="active">
+                    <Button color="secondary" className={classes.button}>
+                        Zaloguj się
+                    </Button>
+                </NavLink>
+            );
+        }
+
+    };
 
     return (
         <div className={classes.root}>
@@ -95,11 +119,8 @@ export default function BlogAppBar(props) {
                                 Strona główna
                             </Button>
                         </NavLink>
-                        <NavLink to="/signIn" activeClassName="active">
-                            <Button color="secondary" className={classes.button}>
-                                Zaloguj się
-                            </Button>
-                        </NavLink>
+                        {loginButton()}
+
                         <NavLink to="/post/3" exact activeClassName="active">
                             <Button color="secondary" className={classes.button}>
                                 O mnie
