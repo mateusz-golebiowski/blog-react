@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import jwt from 'jsonwebtoken';
+
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import BlogAppBar from "../AppBar/AppBar";
@@ -11,6 +11,7 @@ import './App.css';
 import MainPage from "../MainPage/MainPage";
 import PostPage from "../PostPage/PostPage";
 import SignInPage from "../SignInPage/SignInPage";
+import Post from "../Post/Post";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import {signOut, isUserSignedIn, getUserToken} from "../../lib/user";
@@ -98,6 +99,7 @@ function App() {
                 <Switch>
                     <Route path="/" exact component={MainPage} />
                     <Route path="/post/:id" component={PostPage} />
+                    <Route path="/post" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
                 </Switch>
           </Router>

@@ -110,6 +110,20 @@ export default function BlogAppBar(props) {
 
     };
 
+    const addNewPostButton = () => {
+        if(props.userToken !== ''){
+            return (
+                <NavLink to="/post" exact activeClassName="active">
+                    <Button color="secondary" className={classes.button}>
+                        Dodaj wpis
+                    </Button>
+                </NavLink>
+            )
+        } else {
+            return null;
+        }
+    };
+
     return (
         <div className={classes.root}>
             <AppBar position="fixed" >
@@ -120,7 +134,7 @@ export default function BlogAppBar(props) {
                             </Button>
                         </NavLink>
                         {loginButton()}
-
+                        {addNewPostButton()}
                         <NavLink to="/post/3" exact activeClassName="active">
                             <Button color="secondary" className={classes.button}>
                                 O mnie
