@@ -41,6 +41,7 @@ const hLevel = (lv) => `h${lv}`;
 function PostPage(props) {
     const classes = styles();
     const [titleState, setTitleState] = useState('');
+    const [image, setImage] = useState('');
     const [contentState, setContentState] = useState({blocks: []});
     const wrapper = (item) => {
         if(item.type === 'paragraph'){
@@ -71,6 +72,7 @@ function PostPage(props) {
             .then(data => {
                 console.log(data);
                 setTitleState(data.title);
+                setImage(data.img);
                 setContentState(JSON.parse(data.content));
                 console.log(JSON.parse(data.content));
             });
@@ -80,7 +82,7 @@ function PostPage(props) {
     return (
         <>
                 <CssBaseline />
-                <HeaderImage title={titleState}/>
+                <HeaderImage img={image} title={titleState}/>
                 <div className={classes.root}>
                     { preparePost() }
                 </div>

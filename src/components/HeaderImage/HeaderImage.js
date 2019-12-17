@@ -39,7 +39,7 @@ export default function HeaderImage(props) {
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.media}
-                    image={HeaderLogo}
+                    image={props.img}
 
                 />
                 <CardContent className={classes.overlay}>

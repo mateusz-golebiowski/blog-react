@@ -1,12 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image';
 import List from '@editorjs/list';
 import Quote from '@editorjs/quote';
+import {Redirect} from 'react-router-dom';
 
-import {getUserToken} from '../../lib/user';
+
+import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
 import {setUserToken} from '../../lib/user';
 
@@ -17,17 +24,31 @@ const styles = makeStyles(theme => ({
         textAlign: 'left'
     },
     root: {
-        padding: theme.spacing(3, 2),
+        textAlign: 'left',
+        padding: theme.spacing(5),
     },
+    textField: {
+        paddingBottom: theme.spacing(2),
+        width: '100%'
+    }
 
 
 }));
 
+const isSignedIn = () => {
+    if(!isUserSignedIn()) {
+        return (
+            <Redirect to={'/'}/>
+        )
+    } else {
+        return null;
+    }
+};
 
 export default function Post(props) {
 
     const classes = styles();
-    const editor = new EditorJS({
+    const [editor, setEditorState] = useState(new EditorJS({
         /**
          * Id of Element that should contain the Editor
          */
@@ -52,24 +73,44 @@ export default function Post(props) {
             }
         }
 
-    });
-    const [editorState, setEditorState] = useState({});
+    }));
+    const [titleState, setTitleState] = useState('');
+    let image;
+    const updateTitle = (e) => {
+        setTitleState(e.target.value);
+    };
+    const updateImg = (e) => {
+        image = e.target.files[0];
+        console.log(image);
+    };
+    useEffect(() => {
 
-    const saveHandler = () => {
+        console.log('mounted');
+    }, []);
+
+
+    const saveHandler = (e) => {
+        e.preventDefault();
         editor.save().then((outputData) => {
             console.log('Article data: ', outputData);
+            console.log(image);
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('auth', getUserToken());
+            formData.append('title', titleState);
+            formData.append('content', JSON.stringify(outputData));
             const data = {
                 auth: getUserToken(),
-                title: 'd',
-                content: JSON.stringify(outputData)
+                title: titleState,
+                content: JSON.stringify(outputData),
             };
+
             fetch('http://127.0.0.1:4000/api/v1/post', {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: formData
             }).then(function(response) {
                 return response.json();
             }).then(function(data) {
@@ -86,10 +127,43 @@ export default function Post(props) {
 
     return (
         <>
-            <button onClick={saveHandler}>Save</button>
-            <Paper className={classes.root}>
-                <div className={classes.editor} id={'postEditor'} />
-            </Paper>
+            {isSignedIn()}
+            <form onSubmit={saveHandler} className={classes.root}>
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <input
+                            onChange={updateImg}
+                            required={true}
+                            accept="image/*"
+                            className={classes.input}
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            type="file"
+                        />
+
+                        <label htmlFor="raised-button-file">
+                            <Button variant="contained" component="span" className={classes.button}>
+                                Obraz
+                            </Button>
+                        </label>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button type={'submit'} variant="contained" color="primary">
+                            Zapisz
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField  className={classes.textField} value={titleState} onChange={updateTitle} required id="standard-required" label="Tytuł" />
+                        <Typography variant={'h3'}>
+                            Treść wpisu
+                        </Typography>
+                        <Paper className={classes.root}>
+                            <div className={classes.editor} id={'postEditor'} />
+                        </Paper>
+                        </Grid>
+                        </Grid>
+                </form>
+
         </>
     );
 }
