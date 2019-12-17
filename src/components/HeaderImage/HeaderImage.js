@@ -43,7 +43,7 @@ export default function HeaderImage(props) {
 
                 />
                 <CardContent className={classes.overlay}>
-                    <div className={classes.title}>Mój blog</div>
+                    <div className={classes.title}>{props.title}</div>
                 </CardContent>
 
             </Card>

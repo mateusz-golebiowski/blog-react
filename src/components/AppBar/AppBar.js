@@ -135,11 +135,6 @@ export default function BlogAppBar(props) {
                         </NavLink>
                         {loginButton()}
                         {addNewPostButton()}
-                        <NavLink to="/post/3" exact activeClassName="active">
-                            <Button color="secondary" className={classes.button}>
-                                O mnie
-                            </Button>
-                        </NavLink>
                             <Button color="secondary" className={classes.button}>
                                 Kontakt
                             </Button>

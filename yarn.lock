@@ -3746,7 +3746,7 @@ es6-symbol@^3.1.1, es6-symbol@~3.1.1:
     d "^1.0.1"
     es5-ext "^0.10.51"
 
-escape-html@~1.0.3:
+escape-html@^1.0.3, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha1-Aljq5NPQwJdN4cFpGI7wBR0dGYg=
@@ -5124,6 +5124,15 @@ internal-ip@^4.2.0:
   dependencies:
     default-gateway "^4.2.0"
     ipaddr.js "^1.9.0"
+
+interweave@^12.1.1:
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/interweave/-/interweave-12.1.1.tgz#b5d919ec7e9ba067fbcdc041e2167ae999b56a40"
+  integrity sha512-PSW9/wYsJ1A5SyvJajxeOWM8UO0ctvXBiD6zV02+W5JdXr6xUh/efaQtL5+g9VBKSNClBu/SmeTu5h4eSGnGqA==
+  dependencies:
+    "@types/react" "*"
+    escape-html "^1.0.3"
+    prop-types "^15.7.2"
 
 invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"

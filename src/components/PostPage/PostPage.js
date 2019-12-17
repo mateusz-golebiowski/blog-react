@@ -1,5 +1,12 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+
+import { Markup } from 'interweave';
 
 import HeaderImage from "../HeaderImage/HeaderImage";
 
@@ -13,12 +20,6 @@ const styles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
         },
-        card: {
-            maxWidth: '100vw',
-        },
-        media: {
-            height: 240,
-        },
         gridList: {
             width: 500,
             height: 450,
@@ -26,18 +27,62 @@ const styles = makeStyles(theme => ({
         icon: {
             color: 'rgba(255, 255, 255, 0.54)',
         },
+        img: {
+            maxWidth: '90vw'
+        }
     })
 );
 
+const hLevel = (lv) => `h${lv}`;
 
-function PostPage() {
+
+
+
+function PostPage(props) {
     const classes = styles();
+    const [titleState, setTitleState] = useState('');
+    const [contentState, setContentState] = useState({blocks: []});
+    const wrapper = (item) => {
+        if(item.type === 'paragraph'){
+            return (
+                <Typography paragraph={true} variant="body1">
+                    <Markup content={item.data.text} />
+                </Typography>
+            )
+        } else if (item.type === 'header') {
+            return (
+                <Typography variant={hLevel(item.data.level)}>
+                    {item.data.text}
+                </Typography>
+            )
+        }else if (item.type === 'image') {
+            return (
+                <img className={classes.img} src={item.data.file.url} />
+            )
+        }
+    };
+    const preparePost = () => {
+
+       return contentState.blocks.map((item, key) => wrapper(item))
+    };
+    useEffect(() => {
+        fetch(`http://127.0.0.1:4000/api/v1/post/show/${props.match.params.id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setTitleState(data.title);
+                setContentState(JSON.parse(data.content));
+                console.log(JSON.parse(data.content));
+            });
+        console.log('mounted');
+    }, []);
+
     return (
         <>
                 <CssBaseline />
-                <HeaderImage/>
+                <HeaderImage title={titleState}/>
                 <div className={classes.root}>
-                    Lorem ipsum dolor sit amet enim. Etiam ullamcorper. Suspendisse a pellentesque dui, non felis. Maecenas malesuada elit lectus felis, malesuada ultricies. Curabitur et ligula. Ut molestie a, ultricies porta urna. Vestibulum commodo volutpat a, convallis ac, laoreet enim. Phasellus fermentum in, dolor. Pellentesque facilisis. Nulla imperdiet sit amet magna. Vestibulum dapibus, mauris nec malesuada fames ac turpis velit, rhoncus eu, luctus et interdum adipiscing wisi. Aliquam erat ac ipsum. Integer aliquam purus. Quisque lorem tortor fringilla sed, vestibulum id, eleifend justo vel bibendum sapien massa ac turpis faucibus orci luctus non, consectetuer lobortis quis, varius in, purus. Integer ultrices posuere cubilia Curae, Nulla ipsum dolor lacus, suscipit adipiscing. Cum sociis natoque penatibus et ultrices volutpat. Nullam wisi ultricies a, gravida vitae, dapibus risus ante sodales lectus blandit eu, tempor diam pede cursus vitae, ultricies eu, faucibus quis, porttitor eros cursus lectus, pellentesque eget, bibendum a, gravida ullamcorper quam. Nullam viverra consectetuer. Quisque cursus et, porttitor risus. Aliquam sem. In hendrerit nulla quam nunc, accumsan congue. Lorem ipsum primis in nibh vel risus. Sed vel lectus. Ut sagittis, ipsum dolor quam.
+                    { preparePost() }
                 </div>
         </>
     );

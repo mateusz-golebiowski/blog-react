@@ -12,7 +12,6 @@ import {setUserToken} from '../../lib/user';
 
 
 
-
 const styles = makeStyles(theme => ({
     editor: {
         textAlign: 'left'
@@ -74,7 +73,11 @@ export default function Post(props) {
             }).then(function(response) {
                 return response.json();
             }).then(function(data) {
-                console.log(data);
+
+                if(data.success) {
+                    props.history.push(`/post/${data.data.id}`);
+                }
+
             });
         }).catch((error) => {
             console.log('Saving failed: ', error)
