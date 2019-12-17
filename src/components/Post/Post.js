@@ -48,6 +48,7 @@ const isSignedIn = () => {
 export default function Post(props) {
 
     const classes = styles();
+
     const [editor, setEditorState] = useState(new EditorJS({
         /**
          * Id of Element that should contain the Editor
@@ -161,8 +162,8 @@ export default function Post(props) {
                             <div className={classes.editor} id={'postEditor'} />
                         </Paper>
                         </Grid>
-                        </Grid>
-                </form>
+                </Grid>
+            </form>
 
         </>
     );

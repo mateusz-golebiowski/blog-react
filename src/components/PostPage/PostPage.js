@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-
+import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -19,6 +19,8 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 const styles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
+            textAlign: 'left',
+            padding: theme.spacing(5),
         },
         gridList: {
             width: 500,
@@ -83,9 +85,9 @@ function PostPage(props) {
         <>
                 <CssBaseline />
                 <HeaderImage img={image} title={titleState}/>
-                <div className={classes.root}>
+                <Paper className={classes.root}>
                     { preparePost() }
-                </div>
+                </Paper>
         </>
     );
 }

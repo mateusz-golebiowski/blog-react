@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
         transform: 'translate(0, -50%)',
         width: '100%',
         color: 'black',
+        backgroundColor: 'rgba(0,0,0,.5);',
     },
     card: {
         position: 'relative',
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     title: {
         fontSize: '10vw',
         textAlign: 'center',
+        color: theme.palette.secondary.main,
 
     }
 }));

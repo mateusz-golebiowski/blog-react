@@ -22,7 +22,7 @@ const theme = createMuiTheme({
                 main: '#5D5C61'
             },
             secondary: {
-                main: '#7395AE'
+                main: '#cadfee'
             }
         }
     },
@@ -47,34 +47,6 @@ const styles = makeStyles(theme => ({
         },
     })
 );
-
-const tileData = [
-     {
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },  {
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },  {
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },  {
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },{
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },{
-        img: 'https://picsum.photos/200/300',
-         title: 'Image',
-         author: 'author',
-      },
-];
 
 
 function App() {
