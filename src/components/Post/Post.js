@@ -44,48 +44,53 @@ const isSignedIn = () => {
         return null;
     }
 };
+let editor;
 
 export default function Post(props) {
 
     const classes = styles();
 
-    const [editor, setEditorState] = useState(new EditorJS({
-        /**
-         * Id of Element that should contain the Editor
-         */
-        holder: 'postEditor',
 
-        /**
-         * Available Tools list.
-         * Pass Tool's class or Settings object for each Tool you want to use
-         */
-        tools: {
-            header: Header,
-            list: List,
-            Quote: Quote,
-            image: {
-                class: ImageTool,
-                config: {
-                    endpoints: {
-                        byFile: 'http://localhost:4000/api/v1/image/upload', // Your backend file uploader endpoint
-                        byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
-                    }
-                }
-            }
-        }
-
-    }));
     const [titleState, setTitleState] = useState('');
-    let image;
+    const [imageState, setImageState] = useState('');
+
     const updateTitle = (e) => {
+        e.preventDefault();
         setTitleState(e.target.value);
     };
     const updateImg = (e) => {
-        image = e.target.files[0];
-        console.log(image);
+        setImageState(e.target.files[0]);
+
+        console.log(imageState);
+
     };
     useEffect(() => {
+        editor = new EditorJS({
+            /**
+             * Id of Element that should contain the Editor
+             */
+            holder: 'postEditor',
 
+            /**
+             * Available Tools list.
+             * Pass Tool's class or Settings object for each Tool you want to use
+             */
+            tools: {
+                header: Header,
+                list: List,
+                Quote: Quote,
+                image: {
+                    class: ImageTool,
+                    config: {
+                        endpoints: {
+                            byFile: 'http://localhost:4000/api/v1/image/upload', // Your backend file uploader endpoint
+                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                        }
+                    }
+                }
+            }
+
+        });
         console.log('mounted');
     }, []);
 
@@ -94,9 +99,8 @@ export default function Post(props) {
         e.preventDefault();
         editor.save().then((outputData) => {
             console.log('Article data: ', outputData);
-            console.log(image);
             const formData = new FormData();
-            formData.append('image', image);
+            formData.append('image', imageState);
             formData.append('auth', getUserToken());
             formData.append('title', titleState);
             formData.append('content', JSON.stringify(outputData));

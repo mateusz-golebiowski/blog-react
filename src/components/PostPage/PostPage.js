@@ -19,8 +19,12 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 const styles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
-            textAlign: 'left',
+            textAlign: 'center',
             padding: theme.spacing(5),
+            margin: theme.spacing(5),
+            marginLeft: theme.spacing(50),
+            marginRight: theme.spacing(50),
+
         },
         gridList: {
             width: 500,
@@ -48,7 +52,7 @@ function PostPage(props) {
     const wrapper = (item) => {
         if(item.type === 'paragraph'){
             return (
-                <Typography paragraph={true} variant="body1">
+                <Typography paragraph={true} variant="body1" component="span">
                     <Markup content={item.data.text} />
                 </Typography>
             )

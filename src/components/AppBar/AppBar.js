@@ -138,19 +138,7 @@ export default function BlogAppBar(props) {
                             <Button color="secondary" className={classes.button}>
                                 Kontakt
                             </Button>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Szukaj…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </div>
+
                     </Toolbar>
                 </AppBar>
             <Toolbar></Toolbar>

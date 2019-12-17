@@ -21,6 +21,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        padding: theme.spacing(2),
+
     },
     avatar: {
         margin: theme.spacing(1),
@@ -33,6 +35,11 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        backgroundColor: '#ffffff',
+
+
+    }
 }));
 
 
@@ -82,7 +89,7 @@ const SignInPage = (props) => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container className={classes.root} component="main" maxWidth="xs">
             <CssBaseline />
             {isSignedIn()}
             <div className={classes.paper}>

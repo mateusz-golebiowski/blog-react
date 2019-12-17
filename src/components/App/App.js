@@ -23,6 +23,9 @@ const theme = createMuiTheme({
             },
             secondary: {
                 main: '#cadfee'
+            },
+            background: {
+                default: "#F0F0F0"
             }
         }
     },
