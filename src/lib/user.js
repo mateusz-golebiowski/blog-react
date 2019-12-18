@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 
 export const isUserSignedIn = () => {
-    const token = localStorage.getItem('token');
-    if (token !== null) {
+    const localToken = localStorage.getItem('token');
+    const sessionToken = sessionStorage.getItem('token');
+    if (sessionToken !== null || localToken !== null) {
+        const token = sessionToken !== null ? sessionToken : localToken;
         const expDate = jwt.decode(token).exp;
         return expDate >= new Date().getTime()/1000;
     } else {
@@ -14,13 +16,25 @@ export const isUserSignedIn = () => {
 export const signOut = () => {
 
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
 
 };
 
 export const getUserToken = () => {
-    return localStorage.getItem('token')
+    const local = localStorage.getItem('token');
+    const session = sessionStorage.getItem('token');
+    if (session !== null)
+        return session;
+    else
+        return local;
 };
 
-export const setUserToken = (value) => {
-    return localStorage.setItem('token', value);
+export const setUserToken = (value, remember) => {
+    if (remember) {
+        return localStorage.setItem('token', value);
+
+    } else {
+        return sessionStorage.setItem('token', value);
+    }
+
 };
