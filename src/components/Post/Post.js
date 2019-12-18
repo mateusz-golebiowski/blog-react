@@ -15,7 +15,7 @@ import {Redirect} from 'react-router-dom';
 
 import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
-import {setUserToken} from '../../lib/user';
+
 
 
 

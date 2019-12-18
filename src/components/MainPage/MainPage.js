@@ -5,8 +5,6 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import CardActionArea from "@material-ui/core/CardActionArea";
-
 
 import Grid from '@material-ui/core/Grid';
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -23,12 +21,6 @@ const styles = makeStyles(theme => ({
         card: {
 
             display: 'flex',
-        },
-        media: {
-            height: 240,
-        },
-        icon: {
-            color: 'rgba(255, 255, 255, 0.54)',
         },
         details: {
             display: 'flex',

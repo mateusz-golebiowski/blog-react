@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import Box from '@material-ui/core/Box';
 
 import { Markup } from 'interweave';
 
@@ -26,15 +27,8 @@ const styles = makeStyles(theme => ({
             marginRight: theme.spacing(50),
 
         },
-        gridList: {
-            width: 500,
-            height: 450,
-        },
-        icon: {
-            color: 'rgba(255, 255, 255, 0.54)',
-        },
         img: {
-            maxWidth: '90vw'
+            maxWidth: '90%'
         }
     })
 );
