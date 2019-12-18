@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import BlogAppBar from "../AppBar/AppBar";
-import { makeStyles } from '@material-ui/core/styles';
 
 import './App.css';
 
@@ -31,29 +30,7 @@ const theme = createMuiTheme({
     },
 );
 
-const styles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-    },
-    card: {
-        maxWidth: '100vw',
-    },
-    media: {
-        height: 240,
-    },
-        gridList: {
-            width: 500,
-            height: 450,
-        },
-        icon: {
-            color: 'rgba(255, 255, 255, 0.54)',
-        },
-    })
-);
-
-
 function App() {
-    const classes = styles(theme);
     const [userToken, setUserToken] = useState('');
     useEffect(() => {
 

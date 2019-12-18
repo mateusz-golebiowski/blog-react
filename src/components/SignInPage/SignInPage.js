@@ -48,6 +48,7 @@ const SignInPage = (props) => {
     const classes = useStyles();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [remember, setRemember] = useState(false);
 
     const SignIn = (e) => {
         const data = {
@@ -65,7 +66,7 @@ const SignInPage = (props) => {
             return response.json();
         }).then(function(data) {
             if(data.auth) {
-                setUserToken(data.token);
+                setUserToken(data.token, remember);
                 props.setUserToken(data.token);
             }
         });
@@ -77,6 +78,9 @@ const SignInPage = (props) => {
     const handleChangePassword = (event) => {
         setPassword(event.target.value);
     };
+    const handleChangeRemember = (event) => {
+        setRemember(event.target.checked);
+    };
 
     const isSignedIn = () => {
         if(isUserSignedIn()) {
@@ -87,6 +91,8 @@ const SignInPage = (props) => {
             return null;
         }
     };
+
+    console.log(localStorage.getItem('ll'));
 
     return (
         <Container className={classes.root} component="main" maxWidth="xs">
@@ -127,7 +133,7 @@ const SignInPage = (props) => {
                         onChange={handleChangePassword}
                     />
                     <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
+                        control={<Checkbox checked={remember} onChange={handleChangeRemember} value="remember" color="primary" />}
                         label="Remember me"
                     />
                     <Button

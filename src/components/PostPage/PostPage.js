@@ -2,18 +2,13 @@ import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import Box from '@material-ui/core/Box';
+
 
 import { Markup } from 'interweave';
 
 import HeaderImage from "../HeaderImage/HeaderImage";
 
-
-import BlogAppBar from "../AppBar/AppBar";
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 
 
@@ -58,7 +53,7 @@ function PostPage(props) {
             )
         }else if (item.type === 'image') {
             return (
-                <img className={classes.img} src={item.data.file.url} />
+                <img alt={item.data.file.url} className={classes.img} src={item.data.file.url} />
             )
         }
     };

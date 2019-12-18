@@ -104,11 +104,6 @@ export default function Post(props) {
             formData.append('auth', getUserToken());
             formData.append('title', titleState);
             formData.append('content', JSON.stringify(outputData));
-            const data = {
-                auth: getUserToken(),
-                title: titleState,
-                content: JSON.stringify(outputData),
-            };
 
             fetch('http://127.0.0.1:4000/api/v1/post', {
                 method: 'post',
