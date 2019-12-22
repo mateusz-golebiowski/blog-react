@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@editorjs/code": "^2.4.1",
     "@editorjs/editorjs": "^2.16.1",
+    "@editorjs/embed": "^2.2.1",
     "@editorjs/header": "^2.3.2",
     "@editorjs/image": "^2.3.3",
     "@editorjs/list": "^1.4.0",
@@ -21,7 +23,8 @@
     "react-dom": "^16.12.0",
     "react-editor-js": "^1.4.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "react-syntax-highlighter": "^12.2.1"
   },
   "scripts": {
     "start": "react-scripts start",

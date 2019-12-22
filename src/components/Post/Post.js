@@ -10,6 +10,8 @@ import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image';
 import List from '@editorjs/list';
 import Quote from '@editorjs/quote';
+import CodeTool from '@editorjs/code';
+import Embed from '@editorjs/embed';
 import {Redirect} from 'react-router-dom';
 
 
@@ -87,7 +89,9 @@ export default function Post(props) {
                             byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
                         }
                     }
-                }
+                },
+                code: CodeTool,
+                embed: Embed,
             }
 
         });
