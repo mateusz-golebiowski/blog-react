@@ -53,6 +53,7 @@ function App() {
                     <Route path="/post/:id" component={PostPage} />
                     <Route path="/post" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
+                    <Route path="/404" render={(props)=><>404</>}/>
                 </Switch>
           </Router>
 

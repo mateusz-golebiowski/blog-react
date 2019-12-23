@@ -155,20 +155,25 @@ function PostPage(props) {
     };
     const preparePost = () => {
 
-       return contentState.blocks.map((item, key) => wrapper(item))
+       return contentState.blocks.map((item, key) => <span key={key}>{wrapper(item)}</span>);
     };
     useEffect(() => {
         fetch(`http://127.0.0.1:4000/api/v1/post/show/${props.match.params.id}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                setTitleState(data.title);
-                setImage(data.img);
-                setContentState(JSON.parse(data.content));
-                console.log(JSON.parse(data.content));
+                if (data.success) {
+                    console.log(data);
+                    setTitleState(data.title);
+                    setImage(data.img);
+                    setContentState(JSON.parse(data.content));
+                    console.log(JSON.parse(data.content));
+                } else {
+                    props.history.push(`/404`);
+                }
+
             });
         console.log('mounted');
-    }, [props.match.params.id]);
+    }, [props.history, props.match.params.id]);
 
     return (
         <>
