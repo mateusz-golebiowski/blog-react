@@ -155,7 +155,7 @@ function MainPage() {
                         </Grid>
                         {
                             postsState.length > 0 ? postsState.map( (it, key) => {
-                                return it.title.toLowerCase().includes(filterState.toLowerCase())  ? (<Grid item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} key={key}/></Grid>) : null
+                                return it.title.toLowerCase().includes(filterState.toLowerCase())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} /></Grid>) : null
                             }) : <Grid item xs={12} sm={9}>Nic tu nie ma</Grid>
                         }
 
