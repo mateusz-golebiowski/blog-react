@@ -3,7 +3,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
-
+import img from '../../assets/main.jpg';
 
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +39,7 @@ export default function HeaderImage(props) {
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.media}
-                    image={props.img}
+                    image={props.img !== '' ? props.img : img}
 
                 />
                 <CardContent className={classes.overlay}>
