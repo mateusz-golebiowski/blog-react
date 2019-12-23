@@ -27,6 +27,9 @@ const styles = makeStyles(theme => ({
             maxWidth: '100%',
             textAlign: 'center',
         },
+        img: {
+            maxWidth: '100%',
+        },
         embed: {
             border: 0,
             height: '100%',
@@ -101,7 +104,7 @@ function PostPage(props) {
         }else if (item.type === 'image') {
             return (
                 <Paper className={classes.imgContainer}>
-                    <img alt={item.data.file.url} src={item.data.file.url} />
+                    <img className={classes.img} alt={item.data.file.url} src={item.data.file.url} />
                     <Typography className={classes.imgCaption} variant="h5" component="h3">
                         {item.data.caption}
                     </Typography>
