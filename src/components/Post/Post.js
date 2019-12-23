@@ -87,6 +87,9 @@ export default function Post(props) {
                         endpoints: {
                             byFile: 'http://localhost:4000/api/v1/image/upload', // Your backend file uploader endpoint
                             byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                        },
+                        additionalRequestHeaders: {
+                            'authorization': getUserToken()
                         }
                     }
                 },
@@ -105,7 +108,6 @@ export default function Post(props) {
             console.log('Article data: ', outputData);
             const formData = new FormData();
             formData.append('image', imageState);
-            formData.append('auth', getUserToken());
             formData.append('title', titleState);
             formData.append('content', JSON.stringify(outputData));
 
@@ -113,6 +115,7 @@ export default function Post(props) {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
+                    'authorization': getUserToken()
                 },
                 body: formData
             }).then(function(response) {
