@@ -114,7 +114,7 @@ function PostPage(props) {
         }else if (item.type === 'embed') {
             return (
                 <Typography className={classes.embedContainer} paragraph={true} variant="body1" component="p">
-                    <iframe className={classes.embed} src={item.data.embed} allowFullScreen={true}/>
+                    <iframe title={item.data.source} className={classes.embed} src={item.data.embed} allowFullScreen={true}/>
                 </Typography>
 
             )
@@ -168,7 +168,7 @@ function PostPage(props) {
                 console.log(JSON.parse(data.content));
             });
         console.log('mounted');
-    }, []);
+    }, [props.match.params.id]);
 
     return (
         <>
