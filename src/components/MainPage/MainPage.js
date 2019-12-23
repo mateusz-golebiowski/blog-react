@@ -112,7 +112,7 @@ const PostCard = (props) =>{
     );
 };
 
-function MainPage() {
+function MainPage(props) {
     const classes = styles();
     const [postsState, setPostsState] = useState([]);
     const [filterState, setFilterState] = useState('');
@@ -121,14 +121,15 @@ function MainPage() {
         console.log(e.target.value);
     };
     useEffect(() => {
-        fetch(`http://127.0.0.1:4000/api/v1/post/1`)
+        const page = props.match.params.page !== undefined ? props.match.params.page : '1';
+        fetch(`http://127.0.0.1:4000/api/v1/post/${page}`)
             .then(response => response.json())
             .then(data => {
                 setPostsState(data);
                 console.log(data);
             });
         console.log('mounted');
-    }, []);
+    }, [props.match.params.page]);
     return (
         <div className={classes.root}>
 

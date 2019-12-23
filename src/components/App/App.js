@@ -50,6 +50,7 @@ function App() {
                 <BlogAppBar userToken={userToken} setUserToken={setUserToken} />
                 <Switch>
                     <Route path="/" exact component={MainPage} />
+                    <Route path="/:page" exact component={MainPage} />
                     <Route path="/post/:id" component={PostPage} />
                     <Route path="/post" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
