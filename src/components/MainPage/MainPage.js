@@ -12,6 +12,7 @@ import {NavLink} from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
+import Pagination from '../Pagination/Pagination';
 
 const styles = makeStyles(theme => ({
         root: {
@@ -115,18 +116,25 @@ const PostCard = (props) =>{
 function MainPage(props) {
     const classes = styles();
     const [postsState, setPostsState] = useState([]);
+    const [paginationState, setPaginationState] = useState(1);
     const [filterState, setFilterState] = useState('');
     const updateFilter = (e) => {
         setFilterState(e.target.value);
         console.log(e.target.value);
     };
+
+    const updatePage = (page) => {
+        props.history.push(`/page/${page}`);
+    };
     useEffect(() => {
-        const page = props.match.params.page !== undefined ? props.match.params.page : '1';
+        const page = props.match.params.page !== undefined ? props.match.params.page : 1;
         fetch(`http://127.0.0.1:4000/api/v1/post/${page}`)
             .then(response => response.json())
             .then(data => {
-                setPostsState(data);
                 console.log(data);
+                setPaginationState(data.pages);
+                setPostsState(data.posts);
+
             });
         console.log('mounted');
     }, [props.match.params.page]);
@@ -159,6 +167,11 @@ function MainPage(props) {
                                 return it.title.toLowerCase().includes(filterState.toLowerCase())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} /></Grid>) : null
                             }) : <Grid item xs={12} sm={9}>Nic tu nie ma</Grid>
                         }
+
+                        <Grid item xs={12} sm={9}>
+
+                            <Pagination page={props.match.params.page !== undefined ? parseInt(props.match.params.page) : 1} end={paginationState} onChangePage={updatePage}/>
+                        </Grid>
 
                     </Grid>
         </div>
