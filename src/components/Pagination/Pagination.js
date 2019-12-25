@@ -47,26 +47,32 @@ const Pagination = (props) => {
     const handleNext = () => {
         props.onChangePage(props.page+1);
     };
+
     return (
-        <Paper className={classes.root}>
-            <Button size="small" onClick={()=>handlePageChange(1)}>
-                <FirstPage />
-            </Button>
-            <Button size="small" onClick={handleBack} disabled={props.page-1===0}>
-                Back
-                <KeyboardArrowLeft />
-            </Button>
-            {
-                creatPages()
-            }
-            <Button size="small" onClick={handleNext} disabled={props.page===props.end}>
-                Next
-                <KeyboardArrowRight />
-            </Button>
-            <Button size="small" onClick={()=>handlePageChange(props.end)}>
-                <LastPage />
-            </Button>
-        </Paper>
+        <>
+            {props.end > 0 ? (
+                <Paper className={classes.root}>
+                    <Button size="small" onClick={()=>handlePageChange(1)}>
+                        <FirstPage />
+                    </Button>
+                    <Button size="small" onClick={handleBack} disabled={props.page-1===0}>
+                        Back
+                        <KeyboardArrowLeft />
+                    </Button>
+                    {
+                        creatPages()
+                    }
+                    <Button size="small" onClick={handleNext} disabled={props.page===props.end}>
+                        Next
+                        <KeyboardArrowRight />
+                    </Button>
+                    <Button size="small" onClick={()=>handlePageChange(props.end)}>
+                        <LastPage />
+                    </Button>
+                </Paper>
+            ): null}
+
+        </>
     );
 };
 

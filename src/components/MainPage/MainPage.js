@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect, useState, useCallback } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -120,15 +120,20 @@ function MainPage(props) {
     const [filterState, setFilterState] = useState('');
     const updateFilter = (e) => {
         setFilterState(e.target.value);
-        console.log(e.target.value);
     };
 
     const updatePage = (page) => {
         props.history.push(`/page/${page}`);
     };
+
+    const goToFirstPage = useCallback( () => {
+        props.history.push(`/`);
+    }, [props.history]);
     useEffect(() => {
         const page = props.match.params.page !== undefined ? props.match.params.page : 1;
-        fetch(`http://127.0.0.1:4000/api/v1/post/${page}`)
+        const url = filterState.trim() === '' ? `http://127.0.0.1:4000/api/v1/post/${page}` : `http://127.0.0.1:4000/api/v1/post/${page}?title=${filterState.trim()}`;
+
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -138,7 +143,11 @@ function MainPage(props) {
             });
         console.log('mounted');
         window.scrollTo(0, 0);
-    }, [props.match.params.page]);
+    }, [props.match.params.page, filterState]);
+
+    useEffect(() => {
+        goToFirstPage();
+    }, [filterState, goToFirstPage]);
     return (
         <div className={classes.root}>
 
@@ -165,7 +174,7 @@ function MainPage(props) {
                         </Grid>
                         {
                             postsState.length > 0 ? postsState.map( (it, key) => {
-                                return it.title.toLowerCase().includes(filterState.toLowerCase())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} /></Grid>) : null
+                                return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} /></Grid>) : null
                             }) : <Grid item xs={12} sm={9}>Nic tu nie ma</Grid>
                         }
 
