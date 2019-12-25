@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -137,6 +137,7 @@ function MainPage(props) {
 
             });
         console.log('mounted');
+        window.scrollTo(0, 0);
     }, [props.match.params.page]);
     return (
         <div className={classes.root}>

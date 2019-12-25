@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
 import {makeStyles} from '@material-ui/core/styles';
 
 
@@ -27,10 +29,14 @@ const Pagination = (props) => {
     const handlePageChange = (e) => {
         props.onChangePage(e);
     };
-    const creatPages = (end) => {
+    const creatPages = () => {
         const pages = [];
-        for (let i=1; i<=end; i++) {
-            pages.push(<Button onClick={()=>handlePageChange(i)} value={i} key={i} size="small" >{i}</Button>);
+
+        const begin = props.page-2 > 0 ? props.page-2 : 1;
+        const end = props.page +2 < props.end ? props.page+2 : props.end;
+
+        for (let i=begin; i<=end; i++) {
+            pages.push(<Button disabled={i===props.page} onClick={()=>handlePageChange(i)} value={i} key={i} size="small" >{i}</Button>);
         }
         return pages;
     };
@@ -43,16 +49,22 @@ const Pagination = (props) => {
     };
     return (
         <Paper className={classes.root}>
+            <Button size="small" onClick={()=>handlePageChange(1)}>
+                <FirstPage />
+            </Button>
             <Button size="small" onClick={handleBack} disabled={props.page-1===0}>
                 Back
                 <KeyboardArrowLeft />
             </Button>
             {
-                creatPages(props.end)
+                creatPages()
             }
             <Button size="small" onClick={handleNext} disabled={props.page===props.end}>
                 Next
                 <KeyboardArrowRight />
+            </Button>
+            <Button size="small" onClick={()=>handlePageChange(props.end)}>
+                <LastPage />
             </Button>
         </Paper>
     );
