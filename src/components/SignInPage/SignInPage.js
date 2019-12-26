@@ -55,7 +55,7 @@ const SignInPage = (props) => {
             username,
             password
         };
-        fetch('http://127.0.0.1:4000/api/v1/user/signIn', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/signIn`, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',

@@ -158,7 +158,7 @@ function PostPage(props) {
        return contentState.blocks.map((item, key) => <span key={key}>{wrapper(item)}</span>);
     };
     useEffect(() => {
-        fetch(`http://127.0.0.1:4000/api/v1/post/show/${props.match.params.id}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -178,7 +178,7 @@ function PostPage(props) {
     return (
         <>
                 <CssBaseline />
-                <HeaderImage img={image} title={titleState}/>
+                <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
                 <Paper className={classes.root}>
                     { preparePost() }
                 </Paper>

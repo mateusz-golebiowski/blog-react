@@ -85,8 +85,8 @@ export default function Post(props) {
                     class: ImageTool,
                     config: {
                         endpoints: {
-                            byFile: 'http://localhost:4000/api/v1/image/upload', // Your backend file uploader endpoint
-                            byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+                            byFile: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/upload`, // Your backend file uploader endpoint
+                            byUrl: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/fetchUrl`, // Your endpoint that provides uploading by Url
                         },
                         additionalRequestHeaders: {
                             'authorization': getUserToken()
@@ -111,7 +111,7 @@ export default function Post(props) {
             formData.append('title', titleState);
             formData.append('content', JSON.stringify(outputData));
 
-            fetch('http://127.0.0.1:4000/api/v1/post', {
+            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post`, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',

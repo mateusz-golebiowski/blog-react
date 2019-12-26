@@ -20,14 +20,10 @@ const styles = makeStyles(theme => ({
             padding: theme.spacing(5),
         },
         card: {
-
             display: 'flex',
         },
         details: {
-            display: 'flex',
-            width: '100%',
-            padding: theme.spacing(5),
-            flexDirection: 'column',
+            width: '75%',
         },
         content: {
             textAlign: 'left',
@@ -35,9 +31,10 @@ const styles = makeStyles(theme => ({
 
         },
         img: {
-            minWidth: 555,
-            minHeight: 255,
+            height: 0,
+            paddingTop: '56.25%', // 16:9
         },
+
         link: {
             textDecoration: 'none',
             color: theme.palette.primary.main
@@ -85,29 +82,37 @@ const PostCard = (props) =>{
     const classes = styles();
     return (
         <Card className={classes.card}>
-            <CardMedia
-                className={classes.img}
-                image={props.img}
-                title={props.title}
-            />
-            <div className={classes.details}>
-                <CardContent className={classes.content}>
-                    <NavLink className={classes.link} to={`/post/${props.id}`} exact activeClassName="active">
-                        <Typography component="h3" variant="h3">
-                            {props.title}
-                        </Typography>
-                    </NavLink>
-                    <Typography variant="body2" component="p">
-                        Autor: {props.author}
+            <Grid alignItems="center"  container spacing={3}>
+                <Grid item xs={12} sm={5}>
+                    <CardMedia
+                        className={classes.img}
+                        image={props.img}
+                        title={props.title}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={7}>
+                    <div className={classes.details}>
+                        <CardContent className={classes.content}>
+                            <NavLink className={classes.link} to={`/post/${props.id}`} exact activeClassName="active">
+                                <Typography component="h3" variant="h3">
+                                    {props.title}
+                                </Typography>
+                            </NavLink>
+                            <Typography variant="body2" component="p">
+                                Autor: {props.author}
 
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <NavLink to={`/post/${props.id}`} exact activeClassName="active">
-                        <Button size="small">Czytaj</Button>
-                    </NavLink>
-                </CardActions>
-            </div>
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <NavLink to={`/post/${props.id}`} exact activeClassName="active">
+                                <Button size="small">Czytaj</Button>
+                            </NavLink>
+                        </CardActions>
+                    </div>
+                </Grid>
+            </Grid>
+
+
 
         </Card>
     );
@@ -131,7 +136,7 @@ function MainPage(props) {
     }, [props.history]);
     useEffect(() => {
         const page = props.match.params.page !== undefined ? props.match.params.page : 1;
-        const url = filterState.trim() === '' ? `http://127.0.0.1:4000/api/v1/post/${page}` : `http://127.0.0.1:4000/api/v1/post/${page}?title=${filterState.trim()}`;
+        const url = filterState.trim() === '' ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}?title=${filterState.trim()}`;
 
         fetch(url)
             .then(response => response.json())
@@ -142,6 +147,7 @@ function MainPage(props) {
 
             });
         console.log('mounted');
+        console.log(process.env.REACT_APP_SERVER_PORT);
         window.scrollTo(0, 0);
     }, [props.match.params.page, filterState]);
 
@@ -174,7 +180,7 @@ function MainPage(props) {
                         </Grid>
                         {
                             postsState.length > 0 ? postsState.map( (it, key) => {
-                                return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={it.img} title={it.title} id={it.id} /></Grid>) : null
+                                return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.img}`} title={it.title} id={it.id} /></Grid>) : null
                             }) : <Grid item xs={12} sm={9}>Nic tu nie ma</Grid>
                         }
 
