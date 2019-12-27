@@ -13,6 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Pagination from '../Pagination/Pagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = makeStyles(theme => ({
         root: {
@@ -123,6 +124,7 @@ function MainPage(props) {
     const [postsState, setPostsState] = useState([]);
     const [paginationState, setPaginationState] = useState(1);
     const [filterState, setFilterState] = useState('');
+    const [fetchFinishedState, setFetchFinischedState] = useState(false);
     const updateFilter = (e) => {
         setFilterState(e.target.value);
     };
@@ -135,6 +137,8 @@ function MainPage(props) {
         props.history.push(`/`);
     }, [props.history]);
     useEffect(() => {
+        setFetchFinischedState(false);
+        setPostsState([]);
         const page = props.match.params.page !== undefined ? props.match.params.page : 1;
         const url = filterState.trim() === '' ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}?title=${filterState.trim()}`;
 
@@ -144,7 +148,7 @@ function MainPage(props) {
                 console.log(data);
                 setPaginationState(data.pages);
                 setPostsState(data.posts);
-
+                setFetchFinischedState(true);
             });
         console.log('mounted');
         console.log(process.env.REACT_APP_SERVER_PORT);
@@ -181,7 +185,7 @@ function MainPage(props) {
                         {
                             postsState.length > 0 ? postsState.map( (it, key) => {
                                 return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.img}`} title={it.title} id={it.id} /></Grid>) : null
-                            }) : <Grid item xs={12} sm={9}>Nic tu nie ma</Grid>
+                            }) : <Grid item xs={12} sm={9}>{fetchFinishedState ? 'Nic nie znaleziono' : (<CircularProgress />)}</Grid>
                         }
 
                         <Grid item xs={12} sm={9}>

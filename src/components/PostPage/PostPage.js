@@ -17,10 +17,8 @@ const styles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
             textAlign: 'left',
-            padding: theme.spacing(5),
+            padding: theme.spacing(1),
             margin: theme.spacing(5),
-            marginLeft: theme.spacing(50),
-            marginRight: theme.spacing(50),
 
         },
         imgContainer: {
