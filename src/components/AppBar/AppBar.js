@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,7 +19,11 @@ const useStyles = makeStyles(theme => ({
     },
     root: {
         flexGrow: 1,
-    }
+    },
+    link: {
+        textDecoration: 'none',
+        color: 'inherit'
+    },
 }));
 
 
@@ -72,7 +76,7 @@ export default function BlogAppBar(props) {
         if(props.userToken !== ''){
             return (
                 <IconButton edge="start" className={classes.menuButton} onClick={handleClickMenu} color="inherit" aria-label="menu">
-                    <MenuIcon />
+                    <Avatar>d</Avatar>
                 </IconButton>
             )
         } else {
@@ -101,8 +105,12 @@ export default function BlogAppBar(props) {
                     open={Boolean(anchorEl)}
                     onClose={handleCloseMenu}
                 >
-                    <MenuItem onClick={handleCloseMenu}>Mój profil</MenuItem>
-                    <MenuItem onClick={handleCloseMenu}>Użytkownicy</MenuItem>
+                    <NavLink className={classes.link} to="/profile" exact activeClassName="active">
+                        <MenuItem onClick={handleCloseMenu}>Mój profil</MenuItem>
+                    </NavLink>
+                    <NavLink className={classes.link} to="/users" exact activeClassName="active">
+                        <MenuItem onClick={handleCloseMenu}>Użytkownicy</MenuItem>
+                    </NavLink>
                     <MenuItem onClick={handleSignOut}>Wyloguj się</MenuItem>
                 </Menu>
             <Toolbar></Toolbar>
