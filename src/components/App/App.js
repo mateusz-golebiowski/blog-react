@@ -42,7 +42,7 @@ function App() {
             signOut();
         }
 
-    }, []);
+    }, [userToken]);
 
   return (
       <MuiThemeProvider theme={theme}>

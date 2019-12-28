@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {NavLink} from "react-router-dom";
 
-import {signOut} from "../../lib/user";
+import {signOut, getUserId, getUserToken, isUserSignedIn} from '../../lib/user';
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +36,37 @@ export default function BlogAppBar(props) {
         props.setUserToken('');
     };
     const [anchorEl, setAnchorEl] = useState(null);
+    const [initialsState, setInitialsState] = useState('');
 
+
+    useEffect(() => {
+        if(isUserSignedIn()) {
+            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/getData/${getUserId()}`,{
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'authorization': getUserToken()
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log(data);
+                        if(data.data.firstname === null || data.data.lastname === null) {
+                            setInitialsState(data.data.username[0].toUpperCase());
+                        } else {
+                            const initials = `${data.data.firstname[0]}${data.data.lastname[0]}`.toUpperCase();
+                            setInitialsState(initials);
+                        }
+                    } else {
+                        console.log(data);
+                    }
+
+                });
+        }
+
+        console.log('mounted');
+    }, [props.userToken]);
 
     const loginButton = () => {
         if (props.userToken !== '') {
@@ -76,7 +106,7 @@ export default function BlogAppBar(props) {
         if(props.userToken !== ''){
             return (
                 <IconButton edge="start" className={classes.menuButton} onClick={handleClickMenu} color="inherit" aria-label="menu">
-                    <Avatar>d</Avatar>
+                    <Avatar>{initialsState}</Avatar>
                 </IconButton>
             )
         } else {
