@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {isUserSignedIn, setUserToken} from "../../lib/user";
+import {getUserId, getUserToken, isUserSignedIn, setUserToken} from '../../lib/user';
 import {Redirect} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +17,10 @@ const useStyles = makeStyles(theme => ({
 
 const ProfilePage = (props) => {
     const classes = useStyles();
-
+    const [usernameState, setUsernameState] = useState('');
+    const [firstnameState, setFirstnameState] = useState('');
+    const [lastnameState, setLastnameState] = useState('');
+    const [emailState, setEmailState] = useState('');
     const isSignedIn = () => {
         if(isUserSignedIn()) {
             return null;
@@ -28,7 +31,30 @@ const ProfilePage = (props) => {
         }
     };
 
-    console.log(localStorage.getItem('ll'));
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/getData/${getUserId()}`,{
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'authorization': getUserToken()
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(data);
+                    setUsernameState(data.data.username);
+                    setFirstnameState(data.data.firstname ? data.data.firstname : '');
+                    setLastnameState(data.data.lastname ? data.data.lastname : '');
+                    setEmailState(data.data.email ? data.data.email : '');
+                } else {
+                    props.history.push(`/404`);
+                }
+
+            });
+        console.log('mounted');
+    }, []);
 
     return (
         <>
@@ -45,7 +71,7 @@ const ProfilePage = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            required
+                            value={firstnameState}
                             id="firstName"
                             name="firstName"
                             label="Imię"
@@ -55,7 +81,7 @@ const ProfilePage = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            required
+                            value={lastnameState}
                             id="lastName"
                             name="lastName"
                             label="Nazwisko"
@@ -71,6 +97,7 @@ const ProfilePage = (props) => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             required
+                            value={usernameState}
                             id="username"
                             name="username"
                             label="Nazwa użytkownika"
@@ -81,6 +108,7 @@ const ProfilePage = (props) => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             required
+                            value={emailState}
                             id="email"
                             name="email"
                             label="Email"
@@ -93,12 +121,23 @@ const ProfilePage = (props) => {
                             Zmiana hasła
                         </Typography>
                     </Grid>
+                    <Grid item xs={12} sm={12}>
+                        <TextField
+                            required
+                            fullWidth
+                            name="oldPassword"
+                            label="Stare Hasło"
+                            type="password"
+                            id="oldPassword"
+                            autoComplete="current-password"
+                        />
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             required
                             fullWidth
                             name="password"
-                            label="Hasło"
+                            label="Nowe Hasło"
                             type="password"
                             id="password"
                             autoComplete="current-password"

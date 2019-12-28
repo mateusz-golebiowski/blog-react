@@ -56,7 +56,7 @@ function App() {
                     <Route path="/post/:id" component={PostPage} />
                     <Route path="/post" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
-                    <Route path="/profile" render={(props)=><ProfilePage userToken={userToken}/>}/>
+                    <Route path="/profile" component={ProfilePage} />
                     <Route path="/users" render={(props)=><UsersPage userToken={userToken}/>}/>
                     <Route path="/404" render={(props)=><>404</>}/>
                 </Switch>

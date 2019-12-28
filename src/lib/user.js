@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 export const isUserSignedIn = () => {
     const localToken = localStorage.getItem('token');
     const sessionToken = sessionStorage.getItem('token');
+    getUserId();
     if (sessionToken !== null || localToken !== null) {
         const token = sessionToken !== null ? sessionToken : localToken;
         const expDate = jwt.decode(token).exp;
@@ -27,6 +28,15 @@ export const getUserToken = () => {
         return session;
     else
         return local;
+};
+
+export const getUserId = () => {
+    const local = localStorage.getItem('token');
+    const session = sessionStorage.getItem('token');
+    if (session !== null)
+        return jwt.decode(session).id;
+    else
+        return jwt.decode(local).id;
 };
 
 export const setUserToken = (value, remember) => {
