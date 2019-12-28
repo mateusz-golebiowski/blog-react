@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 export const isUserSignedIn = () => {
     const localToken = localStorage.getItem('token');
     const sessionToken = sessionStorage.getItem('token');
-    getUserId();
     if (sessionToken !== null || localToken !== null) {
         const token = sessionToken !== null ? sessionToken : localToken;
         const expDate = jwt.decode(token).exp;
