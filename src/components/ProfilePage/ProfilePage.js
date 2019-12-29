@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import { useSnackbar } from 'notistack';
+import {VariantType} from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,6 +26,11 @@ const ProfilePage = (props) => {
     const [oldPasswordState, setOldPasswordState] = useState('');
     const [newPasswordState, setNewPasswordState] = useState('');
     const [repeatPasswordState, setRepeatPasswordState] = useState('');
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handleShowSnackbar = (msg, variant) => {
+        enqueueSnackbar(msg, {variant});
+    };
 
     const formFields = {
         username: usernameState,
@@ -48,7 +55,7 @@ const ProfilePage = (props) => {
 
         }
         if (Object.keys(data).length > 0) {
-            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/update/${getUserId()}`, {
+            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/updateMyProfile`, {
                 method: 'put',
                 headers: {
                     'Accept': 'application/json',
@@ -59,7 +66,15 @@ const ProfilePage = (props) => {
             }).then(function(response) {
                 return response.json();
             }).then(function(data) {
-                console.log(data)
+                if(data.success) {
+                    setRepeatPasswordState('');
+                    setNewPasswordState('');
+                    setOldPasswordState('');
+                    handleShowSnackbar('Profil został zaktualizowany', 'success');
+                } else {
+                    console.log(data);
+                    handleShowSnackbar(`Błąd zapisu profilu. Powód: ${data.message}`, 'error');
+                }
             });
         }
 

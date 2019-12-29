@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
+import { SnackbarProvider} from 'notistack';
+import Button from '@material-ui/core/Button';
+import CancelIcon from '@material-ui/icons/Cancel';
 import BlogAppBar from "../AppBar/AppBar";
 
 import './App.css';
@@ -34,6 +36,10 @@ const theme = createMuiTheme({
 
 function App() {
     const [userToken, setUserToken] = useState('');
+    const snackbarRef = useRef();
+    const handleCloseSnackBar = (key) => () => {
+        snackbarRef.current.closeSnackbar(key);
+    };
     useEffect(() => {
 
         if (isUserSignedIn()) {
@@ -46,7 +52,17 @@ function App() {
 
   return (
       <MuiThemeProvider theme={theme}>
-        <div className="App">
+          <SnackbarProvider
+              ref={snackbarRef}
+              maxSnack={3}
+              action={(key) => (
+                  <Button color="inherit" size="small" onClick={handleCloseSnackBar(key)}>
+                      <CancelIcon />
+                  </Button>
+              )}
+          >
+
+          <div className="App">
           <CssBaseline />
            <Router>
                 <BlogAppBar userToken={userToken} setUserToken={setUserToken} />
@@ -63,6 +79,7 @@ function App() {
           </Router>
 
         </div>
+          </SnackbarProvider>
       </MuiThemeProvider>
   );
 }
