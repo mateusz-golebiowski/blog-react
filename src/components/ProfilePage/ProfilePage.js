@@ -26,7 +26,13 @@ const ProfilePage = (props) => {
     const [oldPasswordState, setOldPasswordState] = useState('');
     const [newPasswordState, setNewPasswordState] = useState('');
     const [repeatPasswordState, setRepeatPasswordState] = useState('');
+
+    const [newPasswordHelperState, setNewPasswordHelperState] = useState('');
+    const [oldPasswordHelperState, setOldPasswordHelperState] = useState('');
+    const [usernameHelperState, setUsernameHelperState] = useState('');
+
     const { enqueueSnackbar } = useSnackbar();
+
 
     const handleShowSnackbar = (msg, variant) => {
         enqueueSnackbar(msg, {variant});
@@ -41,6 +47,7 @@ const ProfilePage = (props) => {
     const handleFormSubmit = e => {
         e.preventDefault();
         const data = {};
+        let correct = true;
         for (let item in formFields) {
             if (formFields[item].length > 0 ){
                 data[item] = formFields[item];
@@ -50,11 +57,17 @@ const ProfilePage = (props) => {
                 if (newPasswordState === repeatPasswordState && oldPasswordState.length > 0) {
                     data.oldPassword = oldPasswordState;
                     data.newPassword = newPasswordState;
+                } else {
+                    correct = false;
+                    if (newPasswordState !== repeatPasswordState)
+                        setNewPasswordHelperState('Hasła powinny być takie same');
+                    if (oldPasswordState.length === 0)
+                        setOldPasswordHelperState('Żeby zmienić hasło należy podać aktualne hasło');
                 }
             }
 
         }
-        if (Object.keys(data).length > 0) {
+        if (Object.keys(data).length > 0 && correct) {
             fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/updateMyProfile`, {
                 method: 'put',
                 headers: {
@@ -70,12 +83,23 @@ const ProfilePage = (props) => {
                     setRepeatPasswordState('');
                     setNewPasswordState('');
                     setOldPasswordState('');
+                    setNewPasswordHelperState('');
+                    setOldPasswordHelperState('');
+                    setUsernameHelperState('');
                     handleShowSnackbar('Profil został zaktualizowany', 'success');
                 } else {
-                    console.log(data);
+
+                    data.fields.forEach(item => {
+                        console.log(item);
+                        if(item.fieldName === 'username') {
+                            setUsernameHelperState('Nazwa użytkownika jest już zajęta');
+                        }
+                    });
                     handleShowSnackbar(`Błąd zapisu profilu. Powód: ${data.message}`, 'error');
                 }
             });
+        } else {
+            handleShowSnackbar(`Nie udało się zapisać danych`, 'error');
         }
 
 
@@ -166,7 +190,12 @@ const ProfilePage = (props) => {
                                 label="Nazwa użytkownika"
                                 fullWidth
                                 autoComplete="username"
-                                onChange={e => {setUsernameState(e.target.value)}}
+                                onChange={e => {
+                                    setUsernameHelperState('');
+                                    setUsernameState(e.target.value)
+                                }}
+                                helperText={usernameHelperState}
+                                error={usernameHelperState.length>0}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -195,7 +224,12 @@ const ProfilePage = (props) => {
                                 type="password"
                                 id="oldPassword"
                                 autoComplete="password"
-                                onChange={e => {setOldPasswordState(e.target.value)}}
+                                onChange={e => {
+                                    setOldPasswordHelperState('');
+                                    setOldPasswordState(e.target.value);
+                                }}
+                                helperText={oldPasswordHelperState}
+                                error={oldPasswordHelperState.length>0}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -207,7 +241,12 @@ const ProfilePage = (props) => {
                                 type="password"
                                 id="password"
                                 autoComplete="password"
-                                onChange={e => {setNewPasswordState(e.target.value)}}
+                                onChange={e => {
+                                    setNewPasswordHelperState('');
+                                    setNewPasswordState(e.target.value);
+                                }}
+                                helperText={newPasswordHelperState}
+                                error={newPasswordHelperState.length>0}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -219,7 +258,12 @@ const ProfilePage = (props) => {
                                 type="password"
                                 id="repeatPassword"
                                 autoComplete="password"
-                                onChange={e => {setRepeatPasswordState(e.target.value)}}
+                                onChange={e => {
+                                    setNewPasswordHelperState('');
+                                    setRepeatPasswordState(e.target.value);
+                                }}
+                                helperText={newPasswordHelperState}
+                                error={newPasswordHelperState.length>0}
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
