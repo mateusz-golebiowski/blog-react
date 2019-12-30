@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +13,7 @@ import Quote from '@editorjs/quote';
 import CodeTool from '@editorjs/code';
 import Embed from '@editorjs/embed';
 import {Redirect} from 'react-router-dom';
-
+import ImageIcon from '@material-ui/icons/Image';
 
 import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
@@ -32,6 +32,9 @@ const styles = makeStyles(theme => ({
     textField: {
         paddingBottom: theme.spacing(2),
         width: '100%'
+    },
+    img: {
+        maxWidth: '100%',
     }
 
 
@@ -52,9 +55,12 @@ export default function Post(props) {
 
     const classes = styles();
 
-
+    console.log(props.match.params.id);
     const [titleState, setTitleState] = useState('');
     const [imageState, setImageState] = useState('');
+    const [imageUrlState, setImageUrlState] = useState('');
+    const imgInputRef = useRef();
+    const editorRef = useRef();
 
     const updateTitle = (e) => {
         e.preventDefault();
@@ -62,74 +68,121 @@ export default function Post(props) {
     };
     const updateImg = (e) => {
         setImageState(e.target.files[0]);
-
-        console.log(imageState);
-
+        setImageUrlState(URL.createObjectURL(e.target.files[0]));
     };
     useEffect(() => {
-        editor = new EditorJS({
-            /**
-             * Id of Element that should contain the Editor
-             */
-            holder: 'postEditor',
+        setImageUrlState('');
+        setTitleState('');
+        setImageState('');
+        editorRef.current.innerHTML = '';
+        async function createFile(url, name){
+            let response = await fetch(url);
+            let data = await response.blob();
+            let metadata = {
+                type: data.type
+            };
+            let file = new File([data], name, metadata);
+            return file;
+        }
 
-            /**
-             * Available Tools list.
-             * Pass Tool's class or Settings object for each Tool you want to use
-             */
-            tools: {
-                header: Header,
-                list: List,
-                Quote: Quote,
-                image: {
-                    class: ImageTool,
-                    config: {
-                        endpoints: {
-                            byFile: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/upload`, // Your backend file uploader endpoint
-                            byUrl: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/fetchUrl`, // Your endpoint that provides uploading by Url
-                        },
-                        additionalRequestHeaders: {
-                            'authorization': getUserToken()
+        const createEditor = (blocks) => {
+            editor = new EditorJS({
+                /**
+                 * Id of Element that should contain the Editor
+                 */
+                holder: 'postEditor',
+
+                /**
+                 * Available Tools list.
+                 * Pass Tool's class or Settings object for each Tool you want to use
+                 */
+                tools: {
+                    header: Header,
+                    list: List,
+                    Quote: Quote,
+                    image: {
+                        class: ImageTool,
+                        config: {
+                            endpoints: {
+                                byFile: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/upload`, // Your backend file uploader endpoint
+                                byUrl: `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/fetchUrl`, // Your endpoint that provides uploading by Url
+                            },
+                            additionalRequestHeaders: {
+                                'authorization': getUserToken()
+                            }
                         }
-                    }
+                    },
+                    code: CodeTool,
+                    embed: Embed,
                 },
-                code: CodeTool,
-                embed: Embed,
-            }
+                data: blocks,
+            });
+        };
 
-        });
+        let blocks = {};
+        if (props.match.params.id) {
+            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        createFile(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${data.img}`, data.img)
+                            .then( file => {
+                                setImageState(file);
+                                setImageUrlState(URL.createObjectURL(file));
+                            });
+
+                        setTitleState(data.title);
+                        blocks = JSON.parse(data.content);
+                        createEditor(blocks);
+                    } else {
+                        props.history.push(`/404`);
+                    }
+
+                });
+        } else {
+            createEditor(blocks);
+        }
+
+
         console.log('mounted');
-    }, []);
+    }, [props.history, props.match.params.id]);
 
 
     const saveHandler = (e) => {
         e.preventDefault();
-        editor.save().then((outputData) => {
-            console.log('Article data: ', outputData);
-            const formData = new FormData();
-            formData.append('image', imageState);
-            formData.append('title', titleState);
-            formData.append('content', JSON.stringify(outputData));
+        if(imageState === '') {
 
-            fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post`, {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'authorization': getUserToken()
-                },
-                body: formData
-            }).then(function(response) {
-                return response.json();
-            }).then(function(data) {
+        } else {
+            editor.save().then((outputData) => {
+                console.log('Article data: ', outputData);
+                const formData = new FormData();
+                formData.append('image', imageState);
+                formData.append('title', titleState);
+                formData.append('content', JSON.stringify(outputData));
 
-                if(data.success) {
-                    props.history.push(`/post/${data.data.id}`);
-                }
+                const url = props.match.params.id ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${props.match.params.id}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post`;
+                const method = props.match.params.id ? `put` : `post`;
 
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'Accept': 'application/json',
+                        'authorization': getUserToken()
+                    },
+                    body: formData
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(data) {
+
+                    if(data.success) {
+                        props.history.push(`/post/${data.data.id}`);
+                    }
+
+                });
+            }).catch((error) => {
+                console.log('Saving failed: ', error)
             });
-        }).catch((error) => {
-            console.log('Saving failed: ', error)
-        });
+        }
     };
 
     return (
@@ -137,10 +190,15 @@ export default function Post(props) {
             {isSignedIn()}
             <form onSubmit={saveHandler} className={classes.root}>
                 <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper >
+                            {imageUrlState.length>0 ? <img className={classes.img} alt={'preview'} src={imageUrlState} /> : <ImageIcon fontSize={'large'}/>}
+                        </Paper>
+                    </Grid>
                     <Grid item xs={6}>
                         <input
+                            ref={imgInputRef}
                             onChange={updateImg}
-                            required={true}
                             accept="image/*"
                             className={classes.input}
                             style={{ display: 'none' }}
@@ -165,7 +223,7 @@ export default function Post(props) {
                             Treść wpisu
                         </Typography>
                         <Paper className={classes.root}>
-                            <div className={classes.editor} id={'postEditor'} />
+                            <div className={classes.editor} ref={editorRef} id={'postEditor'} />
                         </Paper>
                         </Grid>
                 </Grid>

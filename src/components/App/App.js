@@ -70,6 +70,7 @@ function App() {
                     <Route path="/page/:page" component={MainPage} />
                     <Route path="/post/:id" component={PostPage} />
                     <Route path="/post" component={Post} />
+                    <Route path="/editPost/:id" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
                     <Route path="/profile" component={ProfilePage} />
                     <Route path="/404" render={(props)=><>404</>}/>

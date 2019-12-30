@@ -5,11 +5,14 @@ import Paper from '@material-ui/core/Paper';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
 import { Markup } from 'interweave';
 
 import HeaderImage from "../HeaderImage/HeaderImage";
 
 import { makeStyles } from '@material-ui/core/styles';
+import {NavLink} from 'react-router-dom';
 
 
 
@@ -177,6 +180,14 @@ function PostPage(props) {
         <>
                 <CssBaseline />
                 <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
+                <Paper>
+                    <Toolbar>
+                        <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
+                            <Button>Edytuj</Button>
+                        </NavLink>
+                        <Button>Usuń</Button>
+                    </Toolbar>
+                </Paper>
                 <Paper className={classes.root}>
                     { preparePost() }
                 </Paper>
