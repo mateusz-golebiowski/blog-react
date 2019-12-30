@@ -138,9 +138,6 @@ export default function BlogAppBar(props) {
                     <NavLink className={classes.link} to="/profile" exact activeClassName="active">
                         <MenuItem onClick={handleCloseMenu}>Mój profil</MenuItem>
                     </NavLink>
-                    <NavLink className={classes.link} to="/users" exact activeClassName="active">
-                        <MenuItem onClick={handleCloseMenu}>Użytkownicy</MenuItem>
-                    </NavLink>
                     <MenuItem onClick={handleSignOut}>Wyloguj się</MenuItem>
                 </Menu>
             <Toolbar></Toolbar>

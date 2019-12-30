@@ -13,7 +13,6 @@ import MainPage from "../MainPage/MainPage";
 import PostPage from "../PostPage/PostPage";
 import SignInPage from "../SignInPage/SignInPage";
 import ProfilePage from '../ProfilePage/ProfilePage';
-import UsersPage from '../UsersPage/UsersPage';
 import Post from "../Post/Post";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -73,7 +72,6 @@ function App() {
                     <Route path="/post" component={Post} />
                     <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
                     <Route path="/profile" component={ProfilePage} />
-                    <Route path="/users" render={(props)=><UsersPage userToken={userToken}/>}/>
                     <Route path="/404" render={(props)=><>404</>}/>
                 </Switch>
           </Router>
