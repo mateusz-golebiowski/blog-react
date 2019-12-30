@@ -13,6 +13,7 @@ import HeaderImage from "../HeaderImage/HeaderImage";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {NavLink} from 'react-router-dom';
+import {getUserToken} from '../../lib/user';
 
 
 
@@ -176,6 +177,27 @@ function PostPage(props) {
         console.log('mounted');
     }, [props.history, props.match.params.id]);
 
+    const handleDeletePost = () => {
+        const url = `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${props.match.params.id}`;
+        const method = `delete`;
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'authorization': getUserToken()
+            }
+        }).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+
+            if(data.success) {
+                props.history.push(`/`);
+            }
+
+        });
+    };
+
     return (
         <>
                 <CssBaseline />
@@ -185,7 +207,7 @@ function PostPage(props) {
                         <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
                             <Button>Edytuj</Button>
                         </NavLink>
-                        <Button>Usuń</Button>
+                        <Button onClick={handleDeletePost}>Usuń</Button>
                     </Toolbar>
                 </Paper>
                 <Paper className={classes.root}>
