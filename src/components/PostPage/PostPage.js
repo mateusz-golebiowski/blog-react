@@ -24,8 +24,10 @@ const styles = makeStyles(theme => ({
         root: {
             flexGrow: 1,
             textAlign: 'left',
-            padding: theme.spacing(1),
-            margin: theme.spacing(5),
+            padding: theme.spacing(2),
+            [theme.breakpoints.up('md')]: {
+                margin: theme.spacing(5),
+            },
 
         },
         imgContainer: {
@@ -89,13 +91,13 @@ function PostPage(props) {
     const wrapper = (item) => {
         if(item.type === 'paragraph'){
             return (
-                <Typography paragraph={true} variant="body1" component="span">
+                <Typography paragraph={true} variant="body1" component="div">
                     <Markup content={item.data.text} />
                 </Typography>
             )
         } else if (item.type === 'header') {
             return (
-                <Typography variant={hLevel(item.data.level)}>
+                <Typography paragraph={true} variant={hLevel(item.data.level)}>
                     {item.data.text}
                 </Typography>
             )
