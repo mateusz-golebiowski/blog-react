@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {isUserSignedIn, setUserToken} from "../../lib/user";
 import {Redirect} from 'react-router-dom';
+import {useSnackbar} from 'notistack';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -49,6 +50,11 @@ const SignInPage = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handleShowSnackbar = (msg, variant) => {
+        enqueueSnackbar(msg, {variant});
+    };
 
     const SignIn = (e) => {
         const data = {
@@ -64,10 +70,13 @@ const SignInPage = (props) => {
             body: JSON.stringify(data)
         }).then(function(response) {
             return response.json();
-        }).then(function(data) {
-            if(data.auth) {
-                setUserToken(data.token, remember);
-                props.setUserToken(data.token);
+        }).then(function(response) {
+            if(response.auth) {
+                handleShowSnackbar(`Witaj ${data.username}`, 'success');
+                setUserToken(response.token, remember);
+                props.setUserToken(response.token);
+            } else {
+                handleShowSnackbar(`Błędna nazwa użytkownika lub hasło`, 'error');
             }
         });
         e.preventDefault();
@@ -105,7 +114,7 @@ const SignInPage = (props) => {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form onSubmit={SignIn} className={classes.form} noValidate>
+                <form onSubmit={SignIn} className={classes.form}>
                     <TextField
                         variant="outlined"
                         margin="normal"

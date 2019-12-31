@@ -14,6 +14,7 @@ import HeaderImage from "../HeaderImage/HeaderImage";
 import { makeStyles } from '@material-ui/core/styles';
 import {NavLink} from 'react-router-dom';
 import {getUserToken} from '../../lib/user';
+import {useSnackbar} from 'notistack';
 
 
 
@@ -90,6 +91,13 @@ function PostPage(props) {
     const [titleState, setTitleState] = useState('');
     const [image, setImage] = useState('');
     const [contentState, setContentState] = useState({blocks: []});
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handleShowSnackbar = (msg, variant) => {
+        enqueueSnackbar(msg, {variant});
+    };
+
     const wrapper = (item) => {
         if(item.type === 'paragraph'){
             return (
@@ -192,7 +200,10 @@ function PostPage(props) {
         }).then(function(data) {
 
             if(data.success) {
+                handleShowSnackbar('Wpis został usunięty', 'success');
                 props.history.push(`/`);
+            } else {
+                handleShowSnackbar('Nie udało się usunąć wpisu', 'error');
             }
 
         });

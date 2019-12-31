@@ -17,6 +17,7 @@ import ImageIcon from '@material-ui/icons/Image';
 
 import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
+import {useSnackbar} from 'notistack';
 
 
 
@@ -61,6 +62,12 @@ export default function Post(props) {
     const [imageUrlState, setImageUrlState] = useState('');
     const imgInputRef = useRef();
     const editorRef = useRef();
+
+    const { enqueueSnackbar } = useSnackbar();
+
+    const handleShowSnackbar = (msg, variant) => {
+        enqueueSnackbar(msg, {variant});
+    };
 
     const updateTitle = (e) => {
         e.preventDefault();
@@ -175,7 +182,10 @@ export default function Post(props) {
                 }).then(function(data) {
 
                     if(data.success) {
+                        handleShowSnackbar(props.match.params.id ? 'Zmiany zostały zapisane' : 'Wpis został pomyślnie dodany', 'success');
                         props.history.push(`/post/${data.data.id}`);
+                    } else {
+                        handleShowSnackbar('Nie udało się dodać wpisu', 'error');
                     }
 
                 });
