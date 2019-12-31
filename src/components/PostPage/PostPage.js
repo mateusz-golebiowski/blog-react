@@ -13,8 +13,10 @@ import HeaderImage from "../HeaderImage/HeaderImage";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {NavLink} from 'react-router-dom';
-import {getUserToken} from '../../lib/user';
+import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {useSnackbar} from 'notistack';
+
+import EmbedObject from '../EmbedObject/EmbedObject';
 
 
 
@@ -32,20 +34,6 @@ const styles = makeStyles(theme => ({
         },
         img: {
             maxWidth: '100%',
-        },
-        embed: {
-            border: 0,
-            height: '100%',
-            left: 0,
-            position: 'absolute',
-            top: 0,
-            width: '100%',
-        },
-        embedContainer: {
-            position: 'relative',
-            maxWidth: '100%',
-            paddingBottom: '56.25%',
-            overflow: 'hidden',
         },
         imgCaption: {
             textAlign: 'center'
@@ -123,10 +111,7 @@ function PostPage(props) {
             )
         }else if (item.type === 'embed') {
             return (
-                <Typography className={classes.embedContainer} paragraph={true} variant="body1" component="p">
-                    <iframe title={item.data.source} className={classes.embed} src={item.data.embed} allowFullScreen={true}/>
-                </Typography>
-
+                <EmbedObject title={item.data.source} src={item.data.embed} caption={item.data.caption}/>
             )
         }else if (item.type === 'code') {
             return (
@@ -214,12 +199,15 @@ function PostPage(props) {
                 <CssBaseline />
                 <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
                 <Paper>
-                    <Toolbar>
-                        <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
-                            <Button>Edytuj</Button>
-                        </NavLink>
-                        <Button onClick={handleDeletePost}>Usuń</Button>
-                    </Toolbar>
+                    {isUserSignedIn() ? (
+                        <Toolbar>
+                            <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
+                                <Button>Edytuj</Button>
+                            </NavLink>
+                            <Button onClick={handleDeletePost}>Usuń</Button>
+                        </Toolbar>
+                    ) : null}
+
                 </Paper>
                 <Paper className={classes.root}>
                     { preparePost() }
