@@ -36,6 +36,10 @@ const styles = makeStyles(theme => ({
     },
     img: {
         maxWidth: '100%',
+    },
+    imgIcon: {
+        margin: 'auto',
+        textAlign: 'center'
     }
 
 
@@ -202,7 +206,7 @@ export default function Post(props) {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Paper >
-                            {imageUrlState.length>0 ? <img className={classes.img} alt={'preview'} src={imageUrlState} /> : <ImageIcon fontSize={'large'}/>}
+                            {imageUrlState.length>0 ? <img className={classes.img} alt={'preview'} src={imageUrlState} /> : <div className={classes.imgIcon}><ImageIcon fontSize={'large'}/></div>}
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>

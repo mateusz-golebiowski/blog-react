@@ -48,6 +48,9 @@ function App() {
         }
 
     }, [userToken]);
+    useEffect(() => {
+        document.title = 'Blog'
+    }, []);
 
   return (
       <MuiThemeProvider theme={theme}>
