@@ -17,7 +17,8 @@ import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {useSnackbar} from 'notistack';
 
 import EmbedObject from '../EmbedObject/EmbedObject';
-
+import CommentsSection from '../CommentsSection/CommentsSection';
+import Divider from '@material-ui/core/Divider';
 
 
 const styles = makeStyles(theme => ({
@@ -198,22 +199,23 @@ function PostPage(props) {
 
     return (
         <>
-                <CssBaseline />
-                <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
-                <Paper>
-                    {isUserSignedIn() ? (
-                        <Toolbar>
-                            <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
-                                <Button>Edytuj</Button>
-                            </NavLink>
-                            <Button onClick={handleDeletePost}>Usuń</Button>
-                        </Toolbar>
-                    ) : null}
-
-                </Paper>
-                <Paper className={classes.root}>
-                    { preparePost() }
-                </Paper>
+            <CssBaseline />
+            <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
+            <Paper>
+                {isUserSignedIn() ? (
+                    <Toolbar>
+                        <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
+                            <Button>Edytuj</Button>
+                        </NavLink>
+                        <Button onClick={handleDeletePost}>Usuń</Button>
+                    </Toolbar>
+                ) : null}
+            </Paper>
+            <Paper className={classes.root}>
+                { preparePost() }
+            </Paper>
+            <Divider />
+            <CommentsSection postId={props.match.params.id}/>
         </>
     );
 }
