@@ -10,7 +10,8 @@ import {isUserSignedIn} from '../../lib/user';
 
 const styles = makeStyles(theme => ({
     root: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        marginBottom: theme.spacing(2)
     },
     content: {
         marginTop: theme.spacing(2),
@@ -20,9 +21,17 @@ const styles = makeStyles(theme => ({
     }
 }));
 
+const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const month = date.getMonth() >= 9 ?  date.getMonth()+1 : `0${date.getMonth()+1}`;
+
+    return `${day}.${month}.${year}`;
+};
+
 const Comment = (props) => {
     const classes = styles();
-
     return (
         <Paper className={classes.root}>
             <Grid container>
@@ -35,11 +44,11 @@ const Comment = (props) => {
                     </Grid>
                 ) : null}
                 <Grid item xs={12}>
-                    <Typography variant={'div'}> {props.date}</Typography>
+                    <Typography variant={'caption'}> {formatDate(props.date)}</Typography>
                 </Grid>
             </Grid>
             <Divider />
-            <div className={classes.content} ><Typography variant={'p'}> {props.content}</Typography></div>
+            <div className={classes.content} ><Typography style={{whiteSpace: 'pre-line'}} variant={'body1'}> {props.content}</Typography></div>
 
         </Paper>
     )
