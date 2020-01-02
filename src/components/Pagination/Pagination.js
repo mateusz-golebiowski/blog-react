@@ -10,13 +10,10 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const styles = makeStyles(theme => ({
     root: {
-        padding: 10
+        padding: 10,
+        textAlign: 'center'
     }
 }));
-
-
-
-
 
 const Pagination = (props) => {
     const classes = styles();

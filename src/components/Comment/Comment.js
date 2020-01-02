@@ -40,7 +40,7 @@ const Comment = (props) => {
                 </Grid>
                 {isUserSignedIn() ? (
                     <Grid item xs={12} sm={6}>
-                        <div className={classes.deleteButton}><Button><DeleteForeverIcon /></Button></div>
+                        <div className={classes.deleteButton}><Button onClick={ () => {props.onDelete(props.id)}}><DeleteForeverIcon /></Button></div>
                     </Grid>
                 ) : null}
                 <Grid item xs={12}>

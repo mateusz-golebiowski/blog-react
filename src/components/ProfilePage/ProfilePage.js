@@ -37,6 +37,13 @@ const ProfilePage = (props) => {
         enqueueSnackbar(msg, {variant});
     };
 
+    const validateEmail = () =>{
+        if(emailState.length === 0)
+            return false;
+        //eslint-disable-next-line
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !re.test(emailState.toLowerCase());
+    };
     const formFields = {
         username: usernameState,
         firstname: firstnameState,
@@ -48,24 +55,27 @@ const ProfilePage = (props) => {
         const data = {};
         let correct = true;
         for (let item in formFields) {
-            if (formFields[item].length > 0 ){
+            if (formFields[item].length > 0) {
                 data[item] = formFields[item];
             }
-
-            if(newPasswordState.length > 0 || repeatPasswordState.length > 0) {
-                if (newPasswordState === repeatPasswordState && oldPasswordState.length > 0) {
-                    data.oldPassword = oldPasswordState;
-                    data.newPassword = newPasswordState;
-                } else {
-                    correct = false;
-                    if (newPasswordState !== repeatPasswordState)
-                        setNewPasswordHelperState('Hasła powinny być takie same');
-                    if (oldPasswordState.length === 0)
-                        setOldPasswordHelperState('Żeby zmienić hasło należy podać aktualne hasło');
-                }
-            }
+        }
+        if (validateEmail()) {
+            correct = false;
 
         }
+        if(newPasswordState.length > 0 || repeatPasswordState.length > 0) {
+            if (newPasswordState === repeatPasswordState && oldPasswordState.length > 0) {
+                data.oldPassword = oldPasswordState;
+                data.newPassword = newPasswordState;
+            } else {
+                correct = false;
+                if (newPasswordState !== repeatPasswordState)
+                    setNewPasswordHelperState('Hasła powinny być takie same');
+                if (oldPasswordState.length === 0)
+                    setOldPasswordHelperState('Żeby zmienić hasło należy podać aktualne hasło');
+            }
+        }
+
         if (Object.keys(data).length > 0 && correct) {
             fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/updateMyProfile`, {
                 method: 'put',
@@ -205,6 +215,7 @@ const ProfilePage = (props) => {
                                 name="email"
                                 label="Email"
                                 fullWidth
+                                error={validateEmail()}
                                 autoComplete="email"
                                 onChange={e => {setEmailState(e.target.value)}}
                             />

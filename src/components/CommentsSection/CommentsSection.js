@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import {useSnackbar} from 'notistack';
 import Pagination from '../Pagination/Pagination';
+import {getUserToken} from '../../lib/user';
 
 
 const styles = makeStyles(theme => ({
@@ -43,6 +44,15 @@ const CommentsSection = (props) => {
     const [pages, setPages] = useState(0);
     const [comments, setComments] = useState([]);
 
+    const validateEmail = () =>{
+        if(email.length === 0)
+            return false;
+
+        //eslint-disable-next-line
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !re.test(email.toLowerCase());
+    };
+
     const refreshComments = () => {
 
         const url = `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/comment/${props.postId}/${page}`;
@@ -56,6 +66,9 @@ const CommentsSection = (props) => {
         }).then(function(response) {
             return response.json();
         }).then(function(data) {
+            if(page > data.pages){
+                setPage(data.pages);
+            }
             setPages(data.pages);
             setComments(data.comments);
         })
@@ -66,44 +79,68 @@ const CommentsSection = (props) => {
     const handlePageChange = (page) => {
         setPage(page);
     };
+    const handleDelete = (id) => {
+        const url = `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/comment/${id}`;
+        const method = "delete";
 
-    const handleCommenstAdding = (e) => {
+        fetch(url, {
+            method: method,
+            headers: {
+                'Accept': 'application/json',
+                'authorization': getUserToken()
+            }
+        }).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            if(data.success) {
+                handleShowSnackbar('Komentarz został usunięty', 'success');
+                refreshComments();
+            } else {
+                handleShowSnackbar('Nie udało się usunąć komentarza', 'error');
+            }
+
+        });
+    };
+    const handleCommentsAdding = (e) => {
         e.preventDefault();
         const data = {
             username,
             email,
             content
         };
-        const url = `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/comment/${props.postId}`;
-        const method = `post`;
-        fetch(url, {
-            method: method,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(function(response) {
-            return response.json();
-        }).then(function(data) {
+        if (!validateEmail()){
+            const url = `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/comment/${props.postId}`;
+            const method = `post`;
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
 
-            if(data.success) {
-                handleShowSnackbar('Komentarz został dodany', 'success');
-                setContent('');
-                setEmail('');
-                setUsername('');
-                setPage(1);
-                refreshComments();
-            } else {
-                handleShowSnackbar('Nie udało się dodać komentarza', 'error');
-            }
+                if(data.success) {
+                    handleShowSnackbar('Komentarz został dodany', 'success');
+                    setContent('');
+                    setEmail('');
+                    setUsername('');
+                    setPage(1);
+                    refreshComments();
+                } else {
+                    handleShowSnackbar('Nie udało się dodać komentarza', 'error');
+                }
 
-        });
+            });
+        }
+
     };
 
     return (
         <div className={classes.root}>
-            <form onSubmit={handleCommenstAdding}>
+            <form onSubmit={handleCommentsAdding}>
                 <Grid container>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -124,6 +161,7 @@ const CommentsSection = (props) => {
                             variant="outlined"
                             required
                             value={email}
+                            error={validateEmail()}
                             onChange={(e)=>{setEmail(e.target.value)}}
                         />
                     </Grid>
@@ -145,7 +183,7 @@ const CommentsSection = (props) => {
                 </Grid>
             </form>
             <Typography variant={"h3"}>Komentarze</Typography>
-            {comments.map((item, key)=><Comment key={key} author={item.username} date={item.createdAt} content={item.content}/>)}
+            {comments.map((item, key)=><Comment onDelete={handleDelete} id={item.id} key={key} author={item.username} date={item.createdAt} content={item.content}/>)}
 
             <Pagination page={page} end={pages} onChangePage={handlePageChange} />
         </div>
