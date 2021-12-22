@@ -162,7 +162,7 @@ function PostPage(props) {
                 if (data.success) {
                     console.log(data);
                     setTitleState(data.title);
-                    setImage(data.img);
+                    setImage(data.mainImage);
                     setContentState(JSON.parse(data.content));
                     console.log(JSON.parse(data.content));
                 } else {
