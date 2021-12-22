@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignInPage = (props) => {
     const classes = useStyles();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
@@ -58,7 +58,7 @@ const SignInPage = (props) => {
 
     const SignIn = (e) => {
         const data = {
-            username,
+            email,
             password
         };
         fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/signIn`, {
@@ -76,13 +76,13 @@ const SignInPage = (props) => {
                 setUserToken(response.token, remember);
                 props.setUserToken(response.token);
             } else {
-                handleShowSnackbar(`Błędna nazwa użytkownika lub hasło`, 'error');
+                handleShowSnackbar(`Błędny email lub hasło`, 'error');
             }
         });
         e.preventDefault();
     };
     const handleChangeUsername = (event) => {
-        setUsername(event.target.value);
+        setEmail(event.target.value);
     };
     const handleChangePassword = (event) => {
         setPassword(event.target.value);
@@ -120,12 +120,12 @@ const SignInPage = (props) => {
                         margin="normal"
                         required
                         fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
                         autoFocus
-                        value={username}
+                        value={email}
                         onChange={handleChangeUsername}
                     />
                     <TextField

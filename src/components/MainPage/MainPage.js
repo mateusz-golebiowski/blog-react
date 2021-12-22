@@ -184,7 +184,7 @@ function MainPage(props) {
                         </Grid>
                         {
                             postsState.length > 0 ? postsState.map( (it, key) => {
-                                return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={it.User.username} img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.img}`} title={it.title} id={it.id} /></Grid>) : null
+                                return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={`${it.user.firstName} ${it.user.lastName}` } img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.mainImage}`} title={it.title} id={it.id} /></Grid>) : null
                             }) : <Grid item xs={12} sm={9}>{fetchFinishedState ? 'Nic nie znaleziono' : (<CircularProgress />)}</Grid>
                         }
 

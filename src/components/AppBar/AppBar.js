@@ -53,9 +53,9 @@ export default function BlogAppBar(props) {
                     if (data.success) {
                         console.log(data);
                         if(data.data.firstname === null || data.data.lastname === null) {
-                            setInitialsState(data.data.username[0].toUpperCase());
+                            setInitialsState(data.data.email[0].toUpperCase());
                         } else {
-                            const initials = `${data.data.firstname[0]}${data.data.lastname[0]}`.toUpperCase();
+                            const initials = `${data.data.firstName[0]}${data.data.lastName[0]}`.toUpperCase();
                             setInitialsState(initials);
                         }
                     } else {
