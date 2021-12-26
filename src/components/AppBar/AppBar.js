@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {NavLink} from "react-router-dom";
 
-import {signOut, getUserId, getUserToken, isUserSignedIn} from '../../lib/user';
+import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from '../../lib/user';
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,6 +60,9 @@ export default function BlogAppBar(props) {
                     }
 
                 });
+
+            const data = getTokenDecoded()
+            console.log(data)
         }
 
     }, [props.userToken]);
