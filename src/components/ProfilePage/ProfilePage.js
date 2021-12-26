@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 
 const ProfilePage = (props) => {
     const classes = useStyles();
-    const [usernameState, setUsernameState] = useState('');
     const [firstnameState, setFirstnameState] = useState('');
     const [lastnameState, setLastnameState] = useState('');
     const [emailState, setEmailState] = useState('');
@@ -28,7 +27,6 @@ const ProfilePage = (props) => {
 
     const [newPasswordHelperState, setNewPasswordHelperState] = useState('');
     const [oldPasswordHelperState, setOldPasswordHelperState] = useState('');
-    const [usernameHelperState, setUsernameHelperState] = useState('');
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -45,9 +43,8 @@ const ProfilePage = (props) => {
         return !re.test(emailState.toLowerCase());
     };
     const formFields = {
-        username: usernameState,
-        firstname: firstnameState,
-        lastname: lastnameState,
+        firstName: firstnameState,
+        lastName: lastnameState,
         email: emailState
     };
     const handleFormSubmit = e => {
@@ -94,15 +91,12 @@ const ProfilePage = (props) => {
                     setOldPasswordState('');
                     setNewPasswordHelperState('');
                     setOldPasswordHelperState('');
-                    setUsernameHelperState('');
                     handleShowSnackbar('Profil został zaktualizowany', 'success');
                 } else {
 
                     data.fields.forEach(item => {
-                        console.log(item);
-                        if(item.fieldName === 'username') {
-                            setUsernameHelperState('Nazwa użytkownika jest już zajęta');
-                        }
+                        console.log('error', item);
+
                     });
                     handleShowSnackbar(`Błąd zapisu profilu. Powód: ${data.message}`, 'error');
                 }
@@ -137,9 +131,8 @@ const ProfilePage = (props) => {
             .then(data => {
                 if (data.success) {
                     console.log(data);
-                    setUsernameState(data.data.username);
-                    setFirstnameState(data.data.firstname ? data.data.firstname : '');
-                    setLastnameState(data.data.lastname ? data.data.lastname : '');
+                    setFirstnameState(data.data.firstName ? data.data.firstName : '');
+                    setLastnameState(data.data.lastName ? data.data.lastName : '');
                     setEmailState(data.data.email ? data.data.email : '');
                 } else {
                     props.history.push(`/404`);
@@ -189,23 +182,6 @@ const ProfilePage = (props) => {
                             <Typography align={'left'} variant="h6" gutterBottom>
                                 Zmiana nazwy użytkownika i adresu email
                             </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                value={usernameState}
-                                id="username"
-                                name="username"
-                                label="Nazwa użytkownika"
-                                fullWidth
-                                autoComplete="username"
-                                onChange={e => {
-                                    setUsernameHelperState('');
-                                    setUsernameState(e.target.value)
-                                }}
-                                helperText={usernameHelperState}
-                                error={usernameHelperState.length>0}
-                            />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
