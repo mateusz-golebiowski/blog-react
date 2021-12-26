@@ -11,6 +11,7 @@ import {NavLink} from "react-router-dom";
 
 import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from '../../lib/user';
 
+import {FormattedMessage} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     },
     root: {
         flexGrow: 1,
+    },
+    appbar: {
+        zIndex: theme.zIndex.drawer + 1
     },
     link: {
         textDecoration: 'none',
@@ -95,6 +99,22 @@ export default function BlogAppBar(props) {
             return null;
         }
     };
+
+    const adminPanel = () => {
+        if(props.userToken !== '' && getTokenDecoded().role.id === '1'){
+            return (
+                <NavLink to="/admin" exact activeClassName="active">
+                    <Button color="secondary" className={classes.button}>
+                        <FormattedMessage
+                            id="app.admin.dashboard"
+                        />
+                    </Button>
+                </NavLink>
+            )
+        } else {
+            return null;
+        }
+    };
     const handleClickMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -115,7 +135,7 @@ export default function BlogAppBar(props) {
 
     return (
         <div className={classes.root}>
-            <AppBar position="fixed" >
+            <AppBar position="fixed"  className={classes.appbar}>
                     <Toolbar>
                         {showMenuButton()}
                         <NavLink to="/" exact activeClassName="active">
@@ -125,6 +145,7 @@ export default function BlogAppBar(props) {
                         </NavLink>
                         {loginButton()}
                         {addNewPostButton()}
+                        {adminPanel()}
                     </Toolbar>
                 </AppBar>
                 <Menu

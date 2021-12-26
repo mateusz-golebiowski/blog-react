@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {isUserSignedIn, setUserToken} from "../../lib/user";
+import {getTokenDecoded, getUserToken, isUserSignedIn, setUserToken} from "../../lib/user";
 import {Redirect} from 'react-router-dom';
 import {useSnackbar} from 'notistack';
 
@@ -93,9 +93,16 @@ const SignInPage = (props) => {
 
     const isSignedIn = () => {
         if(isUserSignedIn()) {
+            const role = getTokenDecoded().role.id
+            if (role === '1') {
+                return (
+                    <Redirect to={'/admin'}/>
+                )
+            }
             return (
                 <Redirect to={'/'}/>
             )
+
         } else {
             return null;
         }
