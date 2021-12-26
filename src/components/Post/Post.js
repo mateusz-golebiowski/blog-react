@@ -60,7 +60,6 @@ export default function Post(props) {
 
     const classes = styles();
 
-    console.log(props.match.params.id);
     const [titleState, setTitleState] = useState('');
     const [imageState, setImageState] = useState('');
     const [imageUrlState, setImageUrlState] = useState('');
@@ -153,10 +152,7 @@ export default function Post(props) {
         } else {
             createEditor(blocks);
         }
-
-
-        console.log('mounted');
-    }, [props.history, props.match.params.id]);
+        }, [props.history, props.match.params.id]);
 
 
     const saveHandler = (e) => {
@@ -165,7 +161,6 @@ export default function Post(props) {
 
         } else {
             editor.save().then((outputData) => {
-                console.log('Article data: ', outputData);
                 const formData = new FormData();
                 formData.append('image', imageState);
                 formData.append('title', titleState);

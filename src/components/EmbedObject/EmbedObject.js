@@ -30,7 +30,6 @@ const styles = makeStyles(theme => ({
 
 const EmbedObject = (props) => {
     const classes = styles();
-    console.log(props.caption);
     return (
         <div className={classes.embedDiv}>
             <Typography variant={'h5'} component={'span'}>{props.caption}</Typography>

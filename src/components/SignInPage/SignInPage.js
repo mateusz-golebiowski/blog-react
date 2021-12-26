@@ -101,7 +101,6 @@ const SignInPage = (props) => {
         }
     };
 
-    console.log(localStorage.getItem('ll'));
 
     return (
         <Container className={classes.root} component="main" maxWidth="xs">

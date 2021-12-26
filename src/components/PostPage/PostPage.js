@@ -147,8 +147,6 @@ function PostPage(props) {
 
         )
 
-        }else{
-            console.log(item);
         }
     };
     const preparePost = () => {
@@ -160,17 +158,14 @@ function PostPage(props) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log(data);
                     setTitleState(data.title);
                     setImage(data.mainImage);
                     setContentState(JSON.parse(data.content));
-                    console.log(JSON.parse(data.content));
                 } else {
                     props.history.push(`/404`);
                 }
 
             });
-        console.log('mounted');
     }, [props.history, props.match.params.id]);
 
     const handleDeletePost = () => {

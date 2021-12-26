@@ -18,10 +18,6 @@ const styles = makeStyles(theme => ({
 const Pagination = (props) => {
     const classes = styles();
 
-    useEffect(() => {
-        console.log('mounted');
-    }, []);
-
 
     const handlePageChange = (e) => {
         props.onChangePage(e);
