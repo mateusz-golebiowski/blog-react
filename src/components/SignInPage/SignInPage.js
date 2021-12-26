@@ -72,7 +72,7 @@ const SignInPage = (props) => {
             return response.json();
         }).then(function(response) {
             if(response.auth) {
-                handleShowSnackbar(`Witaj ${data.username}`, 'success');
+                handleShowSnackbar(`Witaj ${data.email}`, 'success');
                 setUserToken(response.token, remember);
                 props.setUserToken(response.token);
             } else {

@@ -47,3 +47,7 @@ export const setUserToken = (value, remember) => {
     }
 
 };
+export const getTokenDecoded = () => {
+    const token = getUserToken();
+    return jwt.decode(token)
+};
