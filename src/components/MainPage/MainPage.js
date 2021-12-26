@@ -145,13 +145,10 @@ function MainPage(props) {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setPaginationState(data.pages);
                 setPostsState(data.posts);
                 setFetchFinischedState(true);
             });
-        console.log('mounted');
-        console.log(process.env.REACT_APP_SERVER_PORT);
         window.scrollTo(0, 0);
     }, [props.match.params.page, filterState]);
 

@@ -93,11 +93,6 @@ const ProfilePage = (props) => {
                     setOldPasswordHelperState('');
                     handleShowSnackbar('Profil został zaktualizowany', 'success');
                 } else {
-
-                    data.fields.forEach(item => {
-                        console.log('error', item);
-
-                    });
                     handleShowSnackbar(`Błąd zapisu profilu. Powód: ${data.message}`, 'error');
                 }
             });
@@ -130,7 +125,6 @@ const ProfilePage = (props) => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log(data);
                     setFirstnameState(data.data.firstName ? data.data.firstName : '');
                     setLastnameState(data.data.lastName ? data.data.lastName : '');
                     setEmailState(data.data.email ? data.data.email : '');
@@ -139,7 +133,6 @@ const ProfilePage = (props) => {
                 }
 
             });
-        console.log('mounted');
     }, [props.history]);
 
     return (

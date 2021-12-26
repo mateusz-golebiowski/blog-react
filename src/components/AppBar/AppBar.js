@@ -51,21 +51,17 @@ export default function BlogAppBar(props) {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        console.log(data);
-                        if(data.data.firstname === null || data.data.lastname === null) {
+                        if(data.data.firstName === null || data.data.lastName === null) {
                             setInitialsState(data.data.email[0].toUpperCase());
                         } else {
                             const initials = `${data.data.firstName[0]}${data.data.lastName[0]}`.toUpperCase();
                             setInitialsState(initials);
                         }
-                    } else {
-                        console.log(data);
                     }
 
                 });
         }
 
-        console.log('mounted');
     }, [props.userToken]);
 
     const loginButton = () => {
