@@ -1,3 +1,5 @@
 {
-  "app.admin.dashboard": "Panel Administracyjny"
+  "app.admin.dashboard": "Panel Administracyjny",
+  "app.dashboard.accounts": "Użytkonwicy"
+
 }
