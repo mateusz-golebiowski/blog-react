@@ -17,6 +17,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from "react-router-dom";
 import Accounts from "./Accounts/Accounts";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+        marginLeft: drawerWidth
     },
 }));
 
@@ -87,8 +89,11 @@ export default function Dashboard(props) {
                     </List>
                 </div>
             </Drawer>
-            {page === '/admin' && <div>d</div>}
-            {page === '/admin/accounts' && <Accounts/>}
+            <div className={classes.content}>
+                {page === '/admin' && <div>d</div>}
+                {page === '/admin/accounts' && <Accounts/>}
+            </div>
+
         </>
     );
 }
