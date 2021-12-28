@@ -28,6 +28,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import InviteUser from "./InviteUser";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import IconButton from '@material-ui/core/IconButton'
 
 const drawerWidth = 240;
 
@@ -57,7 +59,7 @@ const columns = [
 export default function Accounts(props) {
     const classes = useStyles();
     const intl = useIntl();
-    const { data, error } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
+    const { data, error, mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -68,6 +70,22 @@ export default function Accounts(props) {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
+    };
+
+    const removeUser = async (id) => {
+        const response = await fetch(`${apiUrl}/api/v1/user/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'authorization': getUserToken()
+
+            },
+            body: JSON.stringify(data)
+        })
+        const result = await response.json()
+        mutate();
+        console.log(result)
     };
 
     return (
@@ -88,6 +106,11 @@ export default function Accounts(props) {
                                             {column.label}
                                         </TableCell>
                                     ))}
+
+                                    <TableCell
+                                    >
+                                        Options
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -107,6 +130,12 @@ export default function Accounts(props) {
                                                         </TableCell>
                                                     );
                                                 })}
+
+                                                <TableCell>
+                                                    <IconButton onClick={() => removeUser(row.id)}>
+                                                        <DeleteOutlineIcon/>
+                                                    </IconButton>
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}
