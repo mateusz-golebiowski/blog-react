@@ -9,8 +9,14 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import {getUserToken, setUserToken} from "../../../lib/user";
-import {apiUrl} from "../../../lib/config";
+import {apiUrl, fetcher} from "../../../lib/config";
 import {makeStyles} from "@material-ui/core/styles";
+import useSWR from "swr";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 const useStyles = makeStyles(theme => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -39,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function InviteUser(props) {
     const classes = useStyles();
-
+    const { data: rolesData, error } = useSWR(`${apiUrl}/api/v1/user/getRoles`, fetcher)
     const [userData, setUserData] = useState({
         email: '',
         role: 3,
@@ -74,11 +80,8 @@ export default function InviteUser(props) {
     }
     return (
         <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-            </Avatar>
             <Typography component="h1" variant="h5">
-                Sign in
+                Invite
             </Typography>
             <form onSubmit={inviteUser} className={classes.form}>
                 <TextField
@@ -120,6 +123,22 @@ export default function InviteUser(props) {
                     value={userData.lastName}
                     onChange={handleUserData}
                 />
+                <FormControl fullWidth>
+                    <InputLabel id="role">Role</InputLabel>
+                    <Select
+                        labelId="role"
+                        id="role"
+                        value={userData.role}
+                        label="Role"
+                        name="role"
+                        onChange={handleUserData}
+                    >
+                        {rolesData && rolesData.map((item) => (
+                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                {rolesData && JSON.stringify(rolesData)}
 
                 <Button
                     type="submit"
