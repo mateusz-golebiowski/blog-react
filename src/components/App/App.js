@@ -21,6 +21,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import {IntlProvider} from 'react-intl'
 import pl from '../../locale/pl.json'
 import en from '../../locale/en.json'
+import {LanguageContext} from "../../contexts/Languages";
 const theme = createMuiTheme({
         palette: {
             primary: {
@@ -51,41 +52,46 @@ function App() {
         }
 
     }, [userToken]);
-
+    const [ state ] = React.useContext(LanguageContext)
+    const messages = {
+        'en': en,
+        'pl': pl
+    }
   return (
-      <IntlProvider messages={en} locale="en" defaultLocale="en">
-      <MuiThemeProvider theme={theme}>
-          <SnackbarProvider
-              ref={snackbarRef}
-              maxSnack={3}
-              action={(key) => (
-                  <Button color="inherit" size="small" onClick={handleCloseSnackBar(key)}>
-                      <CancelIcon />
-                  </Button>
-              )}
-          >
+          <IntlProvider messages={messages[state.language]} locale={state.language} defaultLocale="en">
+              <MuiThemeProvider theme={theme}>
+                  <SnackbarProvider
+                      ref={snackbarRef}
+                      maxSnack={3}
+                      action={(key) => (
+                          <Button color="inherit" size="small" onClick={handleCloseSnackBar(key)}>
+                              <CancelIcon />
+                          </Button>
+                      )}
+                  >
 
-          <div className="App">
-          <CssBaseline />
-           <Router>
-                <BlogAppBar userToken={userToken} setUserToken={setUserToken} />
-                <Switch>
-                    <Route path="/" exact component={MainPage} />
-                    <Route path="/page/:page" component={MainPage} />
-                    <Route path="/post/:id" component={PostPage} />
-                    <Route path="/post" component={Post} />
-                    <Route path="/editPost/:id" component={Post} />
-                    <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
-                    <Route path="/profile" component={ProfilePage} />
-                    <Route path="/admin" component={Dashboard} />
-                    <Route path="/404" render={(props)=><>404</>}/>
-                </Switch>
-          </Router>
+                      <div className="App">
+                          <CssBaseline />
+                          <Router>
+                              <BlogAppBar userToken={userToken} setUserToken={setUserToken} />
+                              <Switch>
+                                  <Route path="/" exact component={MainPage} />
+                                  <Route path="/page/:page" component={MainPage} />
+                                  <Route path="/post/:id" component={PostPage} />
+                                  <Route path="/post" component={Post} />
+                                  <Route path="/editPost/:id" component={Post} />
+                                  <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
+                                  <Route path="/profile" component={ProfilePage} />
+                                  <Route path="/admin" component={Dashboard} />
+                                  <Route path="/404" render={(props)=><>404</>}/>
+                              </Switch>
+                          </Router>
 
-        </div>
-          </SnackbarProvider>
-      </MuiThemeProvider>
-      </IntlProvider>
+                      </div>
+                  </SnackbarProvider>
+              </MuiThemeProvider>
+          </IntlProvider>
+
   );
 }
 
