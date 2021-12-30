@@ -11,3 +11,13 @@ export const fetcher = (url) => {
         }
     }).then(res => res.json())
 }
+
+export const userFetcher = (url) => {
+    console.log(url)
+    return fetch(url,{
+        method: 'get',
+        headers: {
+            'Accept': 'application/json',
+        }
+    }).then(res => res.json())
+}
