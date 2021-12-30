@@ -17,6 +17,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from "react-router-dom";
 import Accounts from "./Accounts/Accounts";
+import Languages from "./Languages/Languages";
 
 const drawerWidth = 240;
 
@@ -59,6 +60,9 @@ export default function Dashboard(props) {
     const moveToAccounts = () => {
         history.push('/admin/accounts')
     }
+    const moveToLanguages = () => {
+        history.push('/admin/languages')
+    }
 
     return (
         <>
@@ -77,6 +81,10 @@ export default function Dashboard(props) {
                             <ListItemIcon><MailIcon /></ListItemIcon>
                             <ListItemText primary={intl.formatMessage({ id: 'app.dashboard.accounts' })} />
                         </ListItem>
+                        <ListItem button onClick={moveToLanguages}>
+                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <ListItemText primary={intl.formatMessage({ id: 'app.dashboard.languages' })} />
+                        </ListItem>
                     </List>
                     <Divider />
                     <List>
@@ -92,6 +100,7 @@ export default function Dashboard(props) {
             <div className={classes.content}>
                 {page === '/admin' && <div>d</div>}
                 {page === '/admin/accounts' && <Accounts/>}
+                {page === '/admin/languages' && <Languages/>}
             </div>
 
         </>
