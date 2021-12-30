@@ -17,6 +17,7 @@ import {apiUrl, fetcher, userFetcher} from "../../lib/config";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import {LanguageContext} from "../../contexts/Languages";
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -54,13 +55,17 @@ export default function BlogAppBar(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [initialsState, setInitialsState] = useState('');
     const { data: languagesData, error } = useSWR(`${apiUrl}/api/v1/language`, userFetcher)
-    const [language, setLanguage] = useState(1);
-
+    const [ state, dispatch ] = React.useContext(LanguageContext)
     const handleLanguageChange = (event) => {
         const value = event.target.value;
-        setLanguage(value)
+        dispatch({ type: "setAppLanguage", value })
+        localStorage.setItem('language', value)
     }
+    useEffect(() => {
+        const language = localStorage.getItem('language') || 'en';
+        dispatch({ type: "setAppLanguage", value: language })
 
+    }, [])
     useEffect(() => {
         if(isUserSignedIn()) {
             fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/getData/${getUserId()}`,{
@@ -172,13 +177,13 @@ export default function BlogAppBar(props) {
                                 <Select
                                     labelId="language"
                                     id="language"
-                                    value={language}
+                                    value={state.language}
                                     label="Language"
                                     name="language"
                                     onChange={handleLanguageChange}
                                 >
                                     {languagesData && languagesData.map((item) => (
-                                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        <MenuItem key={item.id} value={item.code}>{item.name}</MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
