@@ -14,6 +14,9 @@ import InputBase from '@material-ui/core/InputBase';
 import Paper from '@material-ui/core/Paper';
 import Pagination from '../Pagination/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import useSWR from "swr";
+import {apiUrl, userFetcher} from "../../lib/config";
+import {LanguageContext} from "../../contexts/Languages";
 
 const styles = makeStyles(theme => ({
         root: {
@@ -121,13 +124,17 @@ const PostCard = (props) =>{
 
 function MainPage(props) {
     const classes = styles();
-    const [postsState, setPostsState] = useState([]);
-    const [paginationState, setPaginationState] = useState(1);
+    //const [postsState, setPostsState] = useState([]);
+    //const [paginationState, setPaginationState] = useState(1);
     const [filterState, setFilterState] = useState('');
-    const [fetchFinishedState, setFetchFinischedState] = useState(false);
+    //const [fetchFinishedState, setFetchFinischedState] = useState(false);
+    const page = props.match.params.page !== undefined ? props.match.params.page : 1;
     const updateFilter = (e) => {
         setFilterState(e.target.value);
     };
+    const [ state ] = React.useContext(LanguageContext)
+
+    const { data: postsData, error, mutate } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}`: `${apiUrl}/api/v1/post/${state.language}/${page}?title=${filterState.trim()}`, userFetcher)
 
     const updatePage = (page) => {
         props.history.push(`/page/${page}`);
@@ -137,19 +144,19 @@ function MainPage(props) {
         props.history.push(`/`);
     }, [props.history]);
     useEffect(() => {
-        setFetchFinischedState(false);
-        setPostsState([]);
-        const page = props.match.params.page !== undefined ? props.match.params.page : 1;
-        const url = filterState.trim() === '' ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}?title=${filterState.trim()}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                setPaginationState(data.pages);
-                setPostsState(data.posts);
-                setFetchFinischedState(true);
-            });
-        window.scrollTo(0, 0);
+        // setFetchFinischedState(false);
+        // setPostsState([]);
+        // const page = props.match.params.page !== undefined ? props.match.params.page : 1;
+        // const url = filterState.trim() === '' ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}?title=${filterState.trim()}`;
+        //
+        // fetch(url)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         setPaginationState(data.pages);
+        //         setPostsState(data.posts);
+        //         setFetchFinischedState(true);
+        //     });
+        // window.scrollTo(0, 0);
     }, [props.match.params.page, filterState]);
 
     useEffect(() => {
@@ -180,14 +187,13 @@ function MainPage(props) {
 
                         </Grid>
                         {
-                            postsState.length > 0 ? postsState.map( (it, key) => {
+                            postsData && postsData.posts.length > 0 ? postsData.posts.map( (it, key) => {
                                 return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={`${it.user.firstName} ${it.user.lastName}` } img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.mainImage}`} title={it.title} id={it.id} /></Grid>) : null
-                            }) : <Grid item xs={12} sm={9}>{fetchFinishedState ? 'Nic nie znaleziono' : (<CircularProgress />)}</Grid>
+                            }) : <Grid item xs={12} sm={9}>{postsData && postsData.posts.length ===0 ? 'Nic nie znaleziono' : (<CircularProgress />)}</Grid>
                         }
 
                         <Grid item xs={12} sm={9}>
-
-                            <Pagination page={props.match.params.page !== undefined ? parseInt(props.match.params.page) : 1} end={paginationState} onChangePage={updatePage}/>
+                            <Pagination page={props.match.params.page !== undefined ? parseInt(props.match.params.page) : 1} end={postsData ? postsData.pages: 1} onChangePage={updatePage}/>
                         </Grid>
 
                     </Grid>
