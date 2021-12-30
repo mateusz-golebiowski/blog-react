@@ -154,6 +154,7 @@ function PostPage(props) {
        return contentState.blocks.map((item, key) => <span key={key}>{wrapper(item)}</span>);
     };
     useEffect(() => {
+        console.log(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
         fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
             .then(response => response.json())
             .then(data => {
