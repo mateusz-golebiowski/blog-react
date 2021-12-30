@@ -12,6 +12,11 @@ import {NavLink} from "react-router-dom";
 import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from '../../lib/user';
 
 import {FormattedMessage} from "react-intl";
+import useSWR from "swr";
+import {apiUrl, fetcher, userFetcher} from "../../lib/config";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -28,6 +33,13 @@ const useStyles = makeStyles(theme => ({
         textDecoration: 'none',
         color: 'inherit'
     },
+    btnContainer: {
+        display:'flex',
+        width: 'calc(100% - 120px)'
+    },
+    language: {
+        width: '120px',
+    }
 }));
 
 
@@ -41,7 +53,13 @@ export default function BlogAppBar(props) {
     };
     const [anchorEl, setAnchorEl] = useState(null);
     const [initialsState, setInitialsState] = useState('');
+    const { data: languagesData, error } = useSWR(`${apiUrl}/api/v1/language`, userFetcher)
+    const [language, setLanguage] = useState(1);
 
+    const handleLanguageChange = (event) => {
+        const value = event.target.value;
+        setLanguage(value)
+    }
 
     useEffect(() => {
         if(isUserSignedIn()) {
@@ -143,9 +161,29 @@ export default function BlogAppBar(props) {
                                 Strona główna
                             </Button>
                         </NavLink>
-                        {loginButton()}
-                        {addNewPostButton()}
-                        {adminPanel()}
+                        <div className={classes.btnContainer}>
+                            {loginButton()}
+                            {addNewPostButton()}
+                            {adminPanel()}
+                        </div>
+                        <div className={classes.language}>
+                            <FormControl fullWidth>
+                                <InputLabel id="role">Language</InputLabel>
+                                <Select
+                                    labelId="language"
+                                    id="language"
+                                    value={language}
+                                    label="Language"
+                                    name="language"
+                                    onChange={handleLanguageChange}
+                                >
+                                    {languagesData && languagesData.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </div>
+
                     </Toolbar>
                 </AppBar>
                 <Menu
@@ -159,7 +197,9 @@ export default function BlogAppBar(props) {
                         <MenuItem onClick={handleCloseMenu}>Mój profil</MenuItem>
                     </NavLink>
                     <MenuItem onClick={handleSignOut}>Wyloguj się</MenuItem>
+
                 </Menu>
+
             <Toolbar></Toolbar>
         </div>
     );

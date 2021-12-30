@@ -138,7 +138,6 @@ export default function InviteUser(props) {
                         ))}
                     </Select>
                 </FormControl>
-                {rolesData && JSON.stringify(rolesData)}
 
                 <Button
                     type="submit"
