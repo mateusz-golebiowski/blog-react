@@ -15,8 +15,12 @@ import Paper from '@material-ui/core/Paper';
 import Pagination from '../Pagination/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useSWR from "swr";
-import {apiUrl, userFetcher} from "../../lib/config";
+import {apiUrl, fetcher, userFetcher} from "../../lib/config";
 import {LanguageContext} from "../../contexts/Languages";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = makeStyles(theme => ({
         root: {
@@ -127,6 +131,7 @@ function MainPage(props) {
     //const [postsState, setPostsState] = useState([]);
     //const [paginationState, setPaginationState] = useState(1);
     const [filterState, setFilterState] = useState('');
+    const [category, setCategory] = useState(0);
     //const [fetchFinishedState, setFetchFinischedState] = useState(false);
     const page = props.match.params.page !== undefined ? props.match.params.page : 1;
     const updateFilter = (e) => {
@@ -134,10 +139,15 @@ function MainPage(props) {
     };
     const [ state ] = React.useContext(LanguageContext)
 
-    const { data: postsData, error, mutate } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}`: `${apiUrl}/api/v1/post/${state.language}/${page}?title=${filterState.trim()}`, userFetcher)
+    const { data: postsData, error, mutate } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}`: `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}&title=${filterState.trim()}`, userFetcher)
+    const { data: categoriesData, error: categoryError } = useSWR(`${apiUrl}/api/v1/category`, userFetcher)
 
     const updatePage = (page) => {
         props.history.push(`/page/${page}`);
+    };
+    const handleCategoryChange = (event) => {
+        const {value} = event.target
+        setCategory(value)
     };
 
     const goToFirstPage = useCallback( () => {
@@ -184,6 +194,25 @@ function MainPage(props) {
                                     />
                                 </div>
                             </Paper>
+
+                        </Grid>
+                        <Grid item xs={12} sm={3}>
+                            <FormControl fullWidth>
+                                <Select
+                                    labelId="Category"
+                                    id="category"
+                                    value={category}
+                                    label="Category"
+                                    name="category"
+                                    onChange={handleCategoryChange}
+                                >
+                                    <MenuItem value={0}>All</MenuItem>
+
+                                    {categoriesData && categoriesData.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
                         </Grid>
                         {
