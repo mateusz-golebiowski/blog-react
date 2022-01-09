@@ -18,6 +18,12 @@ import ImageIcon from '@material-ui/icons/Image';
 import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
 import {useSnackbar} from 'notistack';
+import useSWR from "swr";
+import {apiUrl, fetcher} from "../../lib/config";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
 
@@ -63,8 +69,12 @@ export default function Post(props) {
     const [titleState, setTitleState] = useState('');
     const [imageState, setImageState] = useState('');
     const [imageUrlState, setImageUrlState] = useState('');
+    const [language, setLanguage] = useState(1);
+    const [category, setCategory] = useState([]);
     const imgInputRef = useRef();
     const editorRef = useRef();
+    const { data, error, mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
+    const { data: categoryData, error: categoryError, } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -154,6 +164,14 @@ export default function Post(props) {
         }
         }, [props.history, props.match.params.id]);
 
+    const handleLanguageChange = (event) => {
+        const {value} = event.target;
+        setLanguage(value)
+    }
+    const handleCategoryChange = (event) => {
+        const {value} = event.target;
+        setCategory(value)
+    }
 
     const saveHandler = (e) => {
         e.preventDefault();
@@ -164,6 +182,10 @@ export default function Post(props) {
                 const formData = new FormData();
                 formData.append('image', imageState);
                 formData.append('title', titleState);
+                formData.append('language', language);
+                category.forEach(cat => {
+                    formData.append('category[]', cat);
+                })
                 formData.append('content', JSON.stringify(outputData));
 
                 const url = props.match.params.id ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${props.match.params.id}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post`;
@@ -225,6 +247,41 @@ export default function Post(props) {
                         <Button type={'submit'} variant="contained" color="primary">
                             Zapisz
                         </Button>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <FormControl fullWidth>
+                            <InputLabel id="language">Language</InputLabel>
+                            <Select
+                                labelId="language"
+                                id="language"
+                                value={language}
+                                label="Language"
+                                name="language"
+                                onChange={handleLanguageChange}
+                            >
+                                {data && data.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <FormControl fullWidth>
+                            <InputLabel id="category">Category</InputLabel>
+                            <Select
+                                labelId="category-"
+                                id="category"
+                                value={category}
+                                label="category"
+                                name="category"
+                                multiple
+                                onChange={handleCategoryChange}
+                            >
+                                {categoryData && categoryData.map((item) => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField  className={classes.textField} value={titleState} onChange={updateTitle} required id="standard-required" label="Tytuł" />
