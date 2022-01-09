@@ -8,16 +8,17 @@ import {makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 
 import Toolbar from '@material-ui/core/Toolbar';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import TranslateIcon from '@material-ui/icons/Translate';
+import CategoryIcon from '@material-ui/icons/Category';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from "react-router-dom";
 import Accounts from "./Accounts/Accounts";
 import Languages from "./Languages/Languages";
+import Categories from "./Categories/Categories";
 
 const drawerWidth = 240;
 
@@ -63,6 +64,9 @@ export default function Dashboard(props) {
     const moveToLanguages = () => {
         history.push('/admin/languages')
     }
+    const moveToCategories = () => {
+        history.push('/admin/categories')
+    }
 
     return (
         <>
@@ -78,22 +82,17 @@ export default function Dashboard(props) {
                     <List>
 
                         <ListItem button onClick={moveToAccounts}>
-                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <ListItemIcon><AccountCircle /></ListItemIcon>
                             <ListItemText primary={intl.formatMessage({ id: 'app.dashboard.accounts' })} />
                         </ListItem>
                         <ListItem button onClick={moveToLanguages}>
-                            <ListItemIcon><MailIcon /></ListItemIcon>
+                            <ListItemIcon><TranslateIcon /></ListItemIcon>
                             <ListItemText primary={intl.formatMessage({ id: 'app.dashboard.languages' })} />
                         </ListItem>
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
+                        <ListItem button onClick={moveToCategories}>
+                            <ListItemIcon><CategoryIcon /></ListItemIcon>
+                            <ListItemText primary={intl.formatMessage({ id: 'app.dashboard.categories' })} />
+                        </ListItem>
                     </List>
                 </div>
             </Drawer>
@@ -101,6 +100,7 @@ export default function Dashboard(props) {
                 {page === '/admin' && <div>d</div>}
                 {page === '/admin/accounts' && <Accounts/>}
                 {page === '/admin/languages' && <Languages/>}
+                {page === '/admin/categories' && <Categories/>}
             </div>
 
         </>
