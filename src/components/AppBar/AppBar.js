@@ -11,7 +11,7 @@ import {NavLink} from "react-router-dom";
 
 import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from '../../lib/user';
 
-import {FormattedMessage} from "react-intl";
+import {FormattedMessage, useIntl} from "react-intl";
 import useSWR from "swr";
 import {apiUrl, fetcher, userFetcher} from "../../lib/config";
 import FormControl from "@material-ui/core/FormControl";
@@ -46,6 +46,8 @@ const useStyles = makeStyles(theme => ({
 
 
 export default function BlogAppBar(props) {
+    const intl = useIntl();
+
     const classes = useStyles();
     const handleSignOut = () => {
         handleCloseMenu();
@@ -101,7 +103,7 @@ export default function BlogAppBar(props) {
             return (
                 <NavLink to="/signIn" activeClassName="active">
                     <Button color="secondary" className={classes.button}>
-                        Zaloguj się
+                        {intl.formatMessage({ id: 'app.appbar.login' })}
                     </Button>
                 </NavLink>
             );
@@ -114,7 +116,7 @@ export default function BlogAppBar(props) {
             return (
                 <NavLink to="/post" exact activeClassName="active">
                     <Button color="secondary" className={classes.button}>
-                        Dodaj wpis
+                        {intl.formatMessage({ id: 'app.appbar.add' })}
                     </Button>
                 </NavLink>
             )
@@ -163,7 +165,7 @@ export default function BlogAppBar(props) {
                         {showMenuButton()}
                         <NavLink to="/" exact activeClassName="active">
                             <Button color="secondary" className={classes.button}>
-                                Strona główna
+                                {intl.formatMessage({ id: 'app.appbar.main' })}
                             </Button>
                         </NavLink>
                         <div className={classes.btnContainer}>
@@ -173,7 +175,7 @@ export default function BlogAppBar(props) {
                         </div>
                         <div className={classes.language}>
                             <FormControl fullWidth>
-                                <InputLabel id="role">Language</InputLabel>
+                                <InputLabel id="role">{intl.formatMessage({ id: 'app.appbar.language' })}</InputLabel>
                                 <Select
                                     labelId="language"
                                     id="language"
@@ -199,9 +201,9 @@ export default function BlogAppBar(props) {
                     onClose={handleCloseMenu}
                 >
                     <NavLink className={classes.link} to="/profile" exact activeClassName="active">
-                        <MenuItem onClick={handleCloseMenu}>Mój profil</MenuItem>
+                        <MenuItem onClick={handleCloseMenu}>{intl.formatMessage({ id: 'app.appbar.myProfile' })}</MenuItem>
                     </NavLink>
-                    <MenuItem onClick={handleSignOut}>Wyloguj się</MenuItem>
+                    <MenuItem onClick={handleSignOut}>{intl.formatMessage({ id: 'app.appbar.logout' })}</MenuItem>
 
                 </Menu>
 
