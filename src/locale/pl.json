@@ -1,6 +1,13 @@
 {
   "app.admin.dashboard": "Panel Administracyjny",
-  "app.dashboard.accounts": "Użytkonwicy",
-  "app.dashboard.languages": "Języki"
+  "app.dashboard.accounts": "Użytkownicy",
+  "app.dashboard.languages": "Języki",
+  "app.dashboard.categories": "Kategorie",
+  "app.appbar.main": "Strona główna",
+  "app.appbar.myProfile": "Mój profil",
+  "app.appbar.logout": "Wyloguj się",
+  "app.appbar.language": "Język",
+  "app.appbar.login": "Zaloguj się",
+  "app.appbar.add": "Dodaj wpis"
 
 }
