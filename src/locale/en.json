@@ -8,6 +8,11 @@
   "app.appbar.logout": "Logout",
   "app.appbar.language": "Language",
   "app.appbar.login": "Login",
-  "app.appbar.add": "Add article"
+  "app.appbar.add": "Add article",
+  "app.login.welcome": "Welcome {email}",
+  "app.login.wrong": "Wrong email or password",
+  "app.login.email": "Email",
+  "app.login.password": "Password",
+  "app.login.remember": "Remember me"
 
 }

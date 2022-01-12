@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import {getTokenDecoded, getUserToken, isUserSignedIn, setUserToken} from "../../lib/user";
 import {Redirect} from 'react-router-dom';
 import {useSnackbar} from 'notistack';
+import {useIntl} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -46,6 +47,8 @@ const useStyles = makeStyles(theme => ({
 
 
 const SignInPage = (props) => {
+    const intl = useIntl();
+
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -72,11 +75,11 @@ const SignInPage = (props) => {
             return response.json();
         }).then(function(response) {
             if(response.auth) {
-                handleShowSnackbar(`Witaj ${data.email}`, 'success');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.login.welcome' }, {email:data.email}), 'success');
                 setUserToken(response.token, remember);
                 props.setUserToken(response.token);
             } else {
-                handleShowSnackbar(`Błędny email lub hasło`, 'error');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.login.wrong' }), 'error');
             }
         });
         e.preventDefault();
@@ -118,7 +121,7 @@ const SignInPage = (props) => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign in
+                    {intl.formatMessage({ id: 'app.appbar.login' })}
                 </Typography>
                 <form onSubmit={SignIn} className={classes.form}>
                     <TextField
@@ -127,7 +130,7 @@ const SignInPage = (props) => {
                         required
                         fullWidth
                         id="email"
-                        label="Email"
+                        label={intl.formatMessage({ id: 'app.login.email' })}
                         name="email"
                         autoComplete="email"
                         autoFocus
@@ -140,7 +143,7 @@ const SignInPage = (props) => {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={intl.formatMessage({ id: 'app.login.password' })}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -149,7 +152,8 @@ const SignInPage = (props) => {
                     />
                     <FormControlLabel
                         control={<Checkbox checked={remember} onChange={handleChangeRemember} value="remember" color="primary" />}
-                        label="Remember me"
+                        label={intl.formatMessage({ id: 'app.login.remember' })}
+
                     />
                     <Button
                         type="submit"
@@ -158,15 +162,8 @@ const SignInPage = (props) => {
                         color="primary"
                         className={classes.submit}
                     >
-                        Sign In
+                        {intl.formatMessage({ id: 'app.appbar.login' })}
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </form>
             </div>
 

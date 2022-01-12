@@ -8,6 +8,11 @@
   "app.appbar.logout": "Wyloguj się",
   "app.appbar.language": "Język",
   "app.appbar.login": "Zaloguj się",
-  "app.appbar.add": "Dodaj wpis"
+  "app.appbar.add": "Dodaj wpis",
+  "app.login.welcome": "Witaj {email}",
+  "app.login.wrong": "Błędny email lub hasło",
+  "app.login.email": "Email",
+  "app.login.password": "Hasło",
+  "app.login.remember": "Zapamiętaj hasło"
 
 }
