@@ -30,7 +30,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const styles = makeStyles(theme => ({
     editor: {
-        textAlign: 'left'
+        textAlign: 'left',
+        width: '100%',
+        "& .ce-block__content": {
+            maxWidth: 'unset'
+        },
+        "& .ce-toolbar__content": {
+            maxWidth: 'unset'
+        }
     },
     root: {
         textAlign: 'left',
@@ -107,15 +114,7 @@ export default function Post(props) {
 
         const createEditor = (blocks) => {
             editor = new EditorJS({
-                /**
-                 * Id of Element that should contain the Editor
-                 */
                 holder: 'postEditor',
-
-                /**
-                 * Available Tools list.
-                 * Pass Tool's class or Settings object for each Tool you want to use
-                 */
                 tools: {
                     header: Header,
                     list: List,
