@@ -19,6 +19,10 @@
   "app.main.all": "Wszystko",
   "app.main.notFound": "Nic nie znaleziono",
   "app.main.author": "Autor",
-  "app.main.read": "Czytaj"
+  "app.main.read": "Czytaj",
+  "app.post.edit": "Edytuj",
+  "app.post.delete": "Usuń",
+  "app.post.deleteSuccess": "Wpis został usunięty",
+  "app.post.deleteError": "Nie udało się usunąć wpisu"
 
 }

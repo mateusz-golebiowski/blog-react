@@ -19,5 +19,10 @@
   "app.main.all": "All",
   "app.main.notFound": "Not found any article",
   "app.main.author": "Author",
-  "app.main.read": "Read more"
+  "app.main.read": "Read more",
+  "app.post.edit": "Edit",
+  "app.post.delete": "Delete",
+  "app.post.deleteSuccess": "Article removed correctly",
+  "app.post.deleteError": "Error during removing article"
+
 }
