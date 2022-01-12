@@ -13,6 +13,12 @@
   "app.login.wrong": "Błędny email lub hasło",
   "app.login.email": "Email",
   "app.login.password": "Hasło",
-  "app.login.remember": "Zapamiętaj hasło"
+  "app.login.remember": "Zapamiętaj hasło",
+  "app.main.search": "Szukaj...",
+  "app.main.category": "Category",
+  "app.main.all": "Wszystko",
+  "app.main.notFound": "Nic nie znaleziono",
+  "app.main.author": "Autor",
+  "app.main.read": "Czytaj"
 
 }

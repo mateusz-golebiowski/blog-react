@@ -13,6 +13,11 @@
   "app.login.wrong": "Wrong email or password",
   "app.login.email": "Email",
   "app.login.password": "Password",
-  "app.login.remember": "Remember me"
-
+  "app.login.remember": "Remember me",
+  "app.main.search": "Search...",
+  "app.main.category": "Category",
+  "app.main.all": "All",
+  "app.main.notFound": "Not found any article",
+  "app.main.author": "Author",
+  "app.main.read": "Read more"
 }
