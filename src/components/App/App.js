@@ -53,12 +53,18 @@ function App() {
 
     }, [userToken]);
     const [ state ] = React.useContext(LanguageContext)
+    const getLanguage = (lang) => {
+        if (Object.keys(messages).includes(lang)) {
+            return messages[lang]
+        }
+        return messages.en
+    }
     const messages = {
         'en': en,
         'pl': pl
     }
   return (
-          <IntlProvider messages={messages[state.language]} locale={state.language} defaultLocale="en">
+          <IntlProvider messages={getLanguage(state.language)} locale={state.language} defaultLocale="en">
               <MuiThemeProvider theme={theme}>
                   <SnackbarProvider
                       ref={snackbarRef}
