@@ -144,7 +144,8 @@ export default function Post(props) {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        createFile(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${data.img}`, data.img)
+                        console.log(data)
+                        createFile(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${data.mainImage}`, data.mainImage)
                             .then( file => {
                                 setImageState(file);
                                 setImageUrlState(URL.createObjectURL(file));
@@ -153,6 +154,8 @@ export default function Post(props) {
                         setTitleState(data.title);
                         blocks = JSON.parse(data.content);
                         createEditor(blocks);
+                        setCategory(data.categories.map(it => it.id))
+                        setLanguage(data.language.id)
                     } else {
                         props.history.push(`/404`);
                     }
