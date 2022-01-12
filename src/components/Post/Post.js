@@ -24,7 +24,9 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import HeaderImage from "../HeaderImage/HeaderImage";
 
+import img from '../../assets/main.jpg';
 
 
 
@@ -74,8 +76,8 @@ export default function Post(props) {
     const classes = styles();
 
     const [titleState, setTitleState] = useState('');
-    const [imageState, setImageState] = useState('');
-    const [imageUrlState, setImageUrlState] = useState('');
+    const [imageState, setImageState] = useState(img);
+    const [imageUrlState, setImageUrlState] = useState(img);
     const [language, setLanguage] = useState(1);
     const [category, setCategory] = useState([]);
     const imgInputRef = useRef();
@@ -163,6 +165,11 @@ export default function Post(props) {
                 });
         } else {
             createEditor(blocks);
+            createFile(img, 'default.jpg')
+                .then( file => {
+                    setImageState(file);
+                    setImageUrlState(URL.createObjectURL(file));
+                });
         }
         }, [props.history, props.match.params.id]);
 
@@ -224,9 +231,9 @@ export default function Post(props) {
             <form onSubmit={saveHandler} className={classes.root}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Paper >
-                            {imageUrlState.length>0 ? <img className={classes.img} alt={'preview'} src={imageUrlState} /> : <div className={classes.imgIcon}><ImageIcon fontSize={'large'}/></div>}
-                        </Paper>
+                        <HeaderImage img={imageUrlState} title={titleState}/>
+
+
                     </Grid>
                     <Grid item xs={6}>
                         <input
