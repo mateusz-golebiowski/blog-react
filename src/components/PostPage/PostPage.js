@@ -19,6 +19,7 @@ import {useSnackbar} from 'notistack';
 import EmbedObject from '../EmbedObject/EmbedObject';
 import CommentsSection from '../CommentsSection/CommentsSection';
 import Divider from '@material-ui/core/Divider';
+import {useIntl} from "react-intl";
 
 
 const styles = makeStyles(theme => ({
@@ -78,6 +79,8 @@ const hLevel = (lv) => `h${lv}`;
 
 
 function PostPage(props) {
+    const intl = useIntl();
+
     const classes = styles();
     const [titleState, setTitleState] = useState('');
     const [image, setImage] = useState('');
@@ -184,10 +187,10 @@ function PostPage(props) {
         }).then(function(data) {
 
             if(data.success) {
-                handleShowSnackbar('Wpis został usunięty', 'success');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.post.deleteSuccess' }), 'success');
                 props.history.push(`/`);
             } else {
-                handleShowSnackbar('Nie udało się usunąć wpisu', 'error');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.post.deleteError' }), 'error');
             }
 
         });
@@ -201,9 +204,13 @@ function PostPage(props) {
                 {isUserSignedIn() ? (
                     <Toolbar>
                         <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
-                            <Button>Edytuj</Button>
+                            <Button>
+                                {intl.formatMessage({ id: 'app.post.edit' })}
+                            </Button>
                         </NavLink>
-                        <Button onClick={handleDeletePost}>Usuń</Button>
+                        <Button onClick={handleDeletePost}>
+                            {intl.formatMessage({ id: 'app.post.delete' })}
+                        </Button>
                     </Toolbar>
                 ) : null}
             </Paper>
