@@ -21,6 +21,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import {useIntl} from "react-intl";
 
 const styles = makeStyles(theme => ({
         root: {
@@ -87,6 +88,8 @@ const styles = makeStyles(theme => ({
 );
 
 const PostCard = (props) =>{
+    const intl = useIntl();
+
     const classes = styles();
     return (
         <Card className={classes.card}>
@@ -107,13 +110,15 @@ const PostCard = (props) =>{
                                 </Typography>
                             </NavLink>
                             <Typography variant="body2" component="p">
-                                Autor: {props.author}
+                                {intl.formatMessage({ id: 'app.main.author' })}: {props.author}
 
                             </Typography>
                         </CardContent>
                         <CardActions>
                             <NavLink to={`/post/${props.id}`} exact activeClassName="active">
-                                <Button size="small">Czytaj</Button>
+                                <Button size="small">
+                                    {intl.formatMessage({ id: 'app.main.read' })}
+                                </Button>
                             </NavLink>
                         </CardActions>
                     </div>
@@ -127,6 +132,8 @@ const PostCard = (props) =>{
 };
 
 function MainPage(props) {
+    const intl = useIntl();
+
     const classes = styles();
     //const [postsState, setPostsState] = useState([]);
     //const [paginationState, setPaginationState] = useState(1);
@@ -185,7 +192,7 @@ function MainPage(props) {
                                     <InputBase
                                         value={filterState}
                                         onChange={updateFilter}
-                                        placeholder="Szukaj…"
+                                        placeholder={intl.formatMessage({ id: 'app.main.search' })}
                                         classes={{
                                             root: classes.inputRoot,
                                             input: classes.inputInput,
@@ -202,11 +209,12 @@ function MainPage(props) {
                                     labelId="Category"
                                     id="category"
                                     value={category}
-                                    label="Category"
+                                    label={intl.formatMessage({ id: 'app.main.category' })}
                                     name="category"
                                     onChange={handleCategoryChange}
                                 >
-                                    <MenuItem value={0}>All</MenuItem>
+                                    <MenuItem value={0}>{intl.formatMessage({ id: 'app.main.all' })}
+                                    </MenuItem>
 
                                     {categoriesData && categoriesData.map((item) => (
                                         <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
@@ -218,7 +226,8 @@ function MainPage(props) {
                         {
                             postsData && postsData.posts.length > 0 ? postsData.posts.map( (it, key) => {
                                 return it.title.toLowerCase().includes(filterState.toLowerCase().trim())  ? (<Grid key={key} item xs={12} sm={9}><PostCard author={`${it.user.firstName} ${it.user.lastName}` } img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${it.mainImage}`} title={it.title} id={it.id} /></Grid>) : null
-                            }) : <Grid item xs={12} sm={9}>{postsData && postsData.posts.length ===0 ? 'Nic nie znaleziono' : (<CircularProgress />)}</Grid>
+                            }) : <Grid item xs={12} sm={9}>{postsData && postsData.posts.length ===0 ?  intl.formatMessage({ id: 'app.main.notFound' })
+                                : (<CircularProgress />)}</Grid>
                         }
 
                         <Grid item xs={12} sm={9}>
