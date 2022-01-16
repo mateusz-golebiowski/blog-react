@@ -165,7 +165,7 @@ export default function Post(props) {
                 });
         } else {
             createEditor(blocks);
-            createFile(img, 'default.jpgn')
+            createFile(img, 'default.jpg')
                 .then( file => {
                     setImageState(file);
                     setImageUrlState(URL.createObjectURL(file));
@@ -213,7 +213,7 @@ export default function Post(props) {
 
                     if(data.success) {
                         handleShowSnackbar(props.match.params.id ? 'Zmiany zostały zapisane' : 'Wpis został pomyślnie dodany', 'success');
-                        props.history.push(`/post/${data.data.id}`);
+                        props.history.push(`/post/${props.match.params.id}`);
                     } else {
                         handleShowSnackbar('Nie udało się dodać wpisu', 'error');
                     }
