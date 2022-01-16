@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -45,7 +46,10 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function InviteUser(props) {
     const classes = useStyles();
-    const { data: rolesData, error } = useSWR(`${apiUrl}/api/v1/user/getRoles`, fetcher)
+    const { data: rolesData, error,  } = useSWR(`${apiUrl}/api/v1/user/getRoles`, fetcher)
+    const { data: users, mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
+    const { enqueueSnackbar } = useSnackbar();
+
     const [userData, setUserData] = useState({
         email: '',
         role: 3,
@@ -68,8 +72,19 @@ export default function InviteUser(props) {
             },
             body: JSON.stringify(data)
         })
-        const result = await response.json()
-        console.log(result)
+        const resp = await response.json()
+        if (resp.error) {
+            enqueueSnackbar(resp.error, {variant: 'error'});
+
+        } else {
+            setUserData({
+                email: '',
+                role: 3,
+                firstName: '',
+                lastName: '',
+            })
+            await mutate()
+        }
 
     };
     const handleUserData = (event) => {
@@ -91,6 +106,7 @@ export default function InviteUser(props) {
                     fullWidth
                     id="email"
                     label="Email"
+                    type={'email'}
                     name="email"
                     autoComplete="email"
                     autoFocus
