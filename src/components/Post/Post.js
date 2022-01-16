@@ -27,6 +27,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import HeaderImage from "../HeaderImage/HeaderImage";
 
 import img from '../../assets/main.jpg';
+import {useIntl} from "react-intl";
 
 
 
@@ -72,6 +73,7 @@ const isSignedIn = () => {
 let editor;
 
 export default function Post(props) {
+    const intl = useIntl();
 
     const classes = styles();
 
@@ -213,7 +215,8 @@ export default function Post(props) {
 
                     if(data.success) {
                         handleShowSnackbar(props.match.params.id ? 'Zmiany zostały zapisane' : 'Wpis został pomyślnie dodany', 'success');
-                        props.history.push(`/post/${props.match.params.id}`);
+
+                        props.history.push(`/post/${data.data.id}`);
                     } else {
                         handleShowSnackbar('Nie udało się dodać wpisu', 'error');
                     }
@@ -248,23 +251,25 @@ export default function Post(props) {
 
                         <label htmlFor="raised-button-file">
                             <Button variant="contained" component="span" className={classes.button}>
-                                Obraz
+                                {intl.formatMessage({ id: 'app.post.image' })}
                             </Button>
                         </label>
                     </Grid>
                     <Grid item xs={6}>
                         <Button type={'submit'} variant="contained" color="primary">
-                            Zapisz
+                            {intl.formatMessage({ id: 'app.post.save' })}
                         </Button>
                     </Grid>
                     <Grid item xs={3}>
                         <FormControl fullWidth>
-                            <InputLabel id="language">Language</InputLabel>
+                            <InputLabel id="language">
+                                {intl.formatMessage({ id: 'app.appbar.language' })}
+                            </InputLabel>
                             <Select
                                 labelId="language"
                                 id="language"
                                 value={language}
-                                label="Language"
+                                label={intl.formatMessage({ id: 'app.appbar.language' })}
                                 name="language"
                                 onChange={handleLanguageChange}
                             >
@@ -276,12 +281,12 @@ export default function Post(props) {
                     </Grid>
                     <Grid item xs={3}>
                         <FormControl fullWidth>
-                            <InputLabel id="category">Category</InputLabel>
+                            <InputLabel id="category"> {intl.formatMessage({ id: 'app.dashboard.categories' })}</InputLabel>
                             <Select
                                 labelId="category-"
                                 id="category"
                                 value={category}
-                                label="category"
+                                label={intl.formatMessage({ id: 'app.dashboard.categories' })}
                                 name="category"
                                 multiple
                                 onChange={handleCategoryChange}
@@ -293,9 +298,10 @@ export default function Post(props) {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField  className={classes.textField} value={titleState} onChange={updateTitle} required id="standard-required" label="Tytuł" />
+                        <TextField  className={classes.textField} value={titleState} onChange={updateTitle} required id="standard-required"
+                                    label={intl.formatMessage({ id: 'app.post.title' })}/>
                         <Typography variant={'h3'}>
-                            Treść wpisu
+                            {intl.formatMessage({ id: 'app.post.content' })}
                         </Typography>
                         <Paper className={classes.root}>
                             <div className={classes.editor} ref={editorRef} id={'postEditor'} />

@@ -30,7 +30,12 @@
   "app.comment.notAdded": "Error during adding comment",
   "app.comment.user": "User",
   "app.comment.comment": "Comment",
-  "app.comment.comments": "Comments"
+  "app.comment.comments": "Comments",
+  "app.post.image": "Image",
+  "app.post.save": "Save",
+  "app.post.content": "Content",
+  "app.post.title": "Title"
+
 
 
 }

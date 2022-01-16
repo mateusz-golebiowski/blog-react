@@ -30,6 +30,11 @@
   "app.comment.notAdded": "Nie udało się dodać komentarza",
   "app.comment.user": "Użytownik",
   "app.comment.comment": "Komentarz",
-  "app.comment.comments": "Komentarze"
+  "app.comment.comments": "Komentarze",
+  "app.post.image": "Obraz",
+  "app.post.save": "Zapisz",
+  "app.post.content": "Treść wpisu",
+  "app.post.title": "Tytuł"
+
 
 }
