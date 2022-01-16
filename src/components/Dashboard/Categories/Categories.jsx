@@ -63,7 +63,7 @@ export default function Categories(props) {
     };
 
     const removeUser = async (id) => {
-        const response = await fetch(`${apiUrl}/api/v1/language/${id}`, {
+        const response = await fetch(`${apiUrl}/api/v1/category/${id}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

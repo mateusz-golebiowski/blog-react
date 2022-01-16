@@ -198,21 +198,24 @@ function PostPage(props) {
     const isUserAuthor = () => {
         return isUserSignedIn() && getTokenDecoded().id === authorId;
     }
+    const isAdmin = () => {
+        return isUserSignedIn() && getTokenDecoded().role.id === '1';
+    }
     return (
         <>
             <CssBaseline />
             <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
             <Paper>
-                {isUserSignedIn() && isUserAuthor()? (
+                {isUserSignedIn() ? (
                     <Toolbar>
-                        <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
+                        { isUserAuthor() && <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
                             <Button>
                                 {intl.formatMessage({ id: 'app.post.edit' })}
                             </Button>
-                        </NavLink>
-                        <Button onClick={handleDeletePost}>
+                        </NavLink>}
+                        {(isAdmin() || isUserAuthor()) && <Button onClick={handleDeletePost}>
                             {intl.formatMessage({ id: 'app.post.delete' })}
-                        </Button>
+                        </Button>}
                     </Toolbar>
                 ) : null}
             </Paper>
