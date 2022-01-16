@@ -84,6 +84,9 @@ const styles = makeStyles(theme => ({
                 width: 'auto',
             },
         },
+    left: {
+            textAlign: 'left'
+    }
     })
 );
 
@@ -212,6 +215,7 @@ function MainPage(props) {
                                     label={intl.formatMessage({ id: 'app.main.category' })}
                                     name="category"
                                     onChange={handleCategoryChange}
+                                    className={classes.left}
                                 >
                                     <MenuItem value={0}>{intl.formatMessage({ id: 'app.main.all' })}
                                     </MenuItem>
