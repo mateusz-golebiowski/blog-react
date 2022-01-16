@@ -13,8 +13,6 @@ import Quote from '@editorjs/quote';
 import CodeTool from '@editorjs/code';
 import Embed from '@editorjs/embed';
 import {Redirect} from 'react-router-dom';
-import ImageIcon from '@material-ui/icons/Image';
-
 import {getUserToken, isUserSignedIn} from '../../lib/user';
 import {makeStyles} from '@material-ui/core/styles';
 import {useSnackbar} from 'notistack';
@@ -84,8 +82,8 @@ export default function Post(props) {
     const [category, setCategory] = useState([]);
     const imgInputRef = useRef();
     const editorRef = useRef();
-    const { data, error, mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
-    const { data: categoryData, error: categoryError, } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
+    const { data } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
+    const { data: categoryData } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
 
     const { enqueueSnackbar } = useSnackbar();
 

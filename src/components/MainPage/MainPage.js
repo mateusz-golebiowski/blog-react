@@ -15,10 +15,9 @@ import Paper from '@material-ui/core/Paper';
 import Pagination from '../Pagination/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useSWR from "swr";
-import {apiUrl, fetcher, userFetcher} from "../../lib/config";
+import {apiUrl, userFetcher} from "../../lib/config";
 import {LanguageContext} from "../../contexts/Languages";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {useIntl} from "react-intl";
@@ -136,21 +135,18 @@ const PostCard = (props) =>{
 
 function MainPage(props) {
     const intl = useIntl();
-
     const classes = styles();
-    //const [postsState, setPostsState] = useState([]);
-    //const [paginationState, setPaginationState] = useState(1);
+
     const [filterState, setFilterState] = useState('');
     const [category, setCategory] = useState(0);
-    //const [fetchFinishedState, setFetchFinischedState] = useState(false);
     const page = props.match.params.page !== undefined ? props.match.params.page : 1;
     const updateFilter = (e) => {
         setFilterState(e.target.value);
     };
     const [ state ] = React.useContext(LanguageContext)
 
-    const { data: postsData, error, mutate } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}`: `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}&title=${filterState.trim()}`, userFetcher)
-    const { data: categoriesData, error: categoryError } = useSWR(`${apiUrl}/api/v1/category`, userFetcher)
+    const { data: postsData } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}`: `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}&title=${filterState.trim()}`, userFetcher)
+    const { data: categoriesData } = useSWR(`${apiUrl}/api/v1/category`, userFetcher)
 
     const updatePage = (page) => {
         props.history.push(`/page/${page}`);
@@ -163,21 +159,6 @@ function MainPage(props) {
     const goToFirstPage = useCallback( () => {
         props.history.push(`/`);
     }, [props.history]);
-    useEffect(() => {
-        // setFetchFinischedState(false);
-        // setPostsState([]);
-        // const page = props.match.params.page !== undefined ? props.match.params.page : 1;
-        // const url = filterState.trim() === '' ? `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}` : `${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/${page}?title=${filterState.trim()}`;
-        //
-        // fetch(url)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         setPaginationState(data.pages);
-        //         setPostsState(data.posts);
-        //         setFetchFinischedState(true);
-        //     });
-        // window.scrollTo(0, 0);
-    }, [props.match.params.page, filterState]);
 
     useEffect(() => {
         goToFirstPage();

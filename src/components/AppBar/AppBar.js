@@ -13,7 +13,7 @@ import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from 
 
 import {FormattedMessage, useIntl} from "react-intl";
 import useSWR from "swr";
-import {apiUrl, fetcher, userFetcher} from "../../lib/config";
+import {apiUrl, userFetcher} from "../../lib/config";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -58,7 +58,7 @@ export default function BlogAppBar(props) {
     };
     const [anchorEl, setAnchorEl] = useState(null);
     const [initialsState, setInitialsState] = useState('');
-    const { data: languagesData, error } = useSWR(`${apiUrl}/api/v1/language`, userFetcher)
+    const { data: languagesData } = useSWR(`${apiUrl}/api/v1/language`, userFetcher)
     const [ state, dispatch ] = React.useContext(LanguageContext)
     const handleLanguageChange = (event) => {
         const value = event.target.value;
@@ -68,8 +68,9 @@ export default function BlogAppBar(props) {
     useEffect(() => {
         const language = localStorage.getItem('language') || 'en';
         dispatch({ type: "setAppLanguage", value: language })
-
+        // eslint-disable-next-line
     }, [])
+    // eslint-disable-next-line
     useEffect(() => {
         if(isUserSignedIn()) {
             fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/user/getData/${getUserId()}`,{
