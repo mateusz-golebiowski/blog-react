@@ -97,7 +97,7 @@ export default function Dashboard(props) {
                 </div>
             </Drawer>
             <div className={classes.content}>
-                {page === '/admin' && <div>d</div>}
+                {page === '/admin' && <Accounts/>}
                 {page === '/admin/accounts' && <Accounts/>}
                 {page === '/admin/languages' && <Languages/>}
                 {page === '/admin/categories' && <Categories/>}

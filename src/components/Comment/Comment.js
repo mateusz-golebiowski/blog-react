@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Button from '@material-ui/core/Button';
-import {isUserSignedIn} from '../../lib/user';
+import {getTokenDecoded, isUserSignedIn} from '../../lib/user';
 
 const styles = makeStyles(theme => ({
     root: {
@@ -30,6 +30,10 @@ const formatDate = (dateStr) => {
     return `${day}.${month}.${year}`;
 };
 
+const isModeratorOrAdmin = () => {
+  return getTokenDecoded().role.id === '2' || getTokenDecoded().role.id === '1'
+}
+
 const Comment = (props) => {
     const classes = styles();
     return (
@@ -38,7 +42,7 @@ const Comment = (props) => {
                 <Grid item xs={12} sm={6}>
                     <Typography variant={'h6'}> {props.author}</Typography>
                 </Grid>
-                {isUserSignedIn() ? (
+                {isUserSignedIn()  && isModeratorOrAdmin()? (
                     <Grid item xs={12} sm={6}>
                         <div className={classes.deleteButton}><Button onClick={ () => {props.onDelete(props.id)}}><DeleteForeverIcon /></Button></div>
                     </Grid>
