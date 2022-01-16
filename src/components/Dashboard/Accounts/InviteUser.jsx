@@ -40,8 +40,9 @@ const useStyles = makeStyles(theme => ({
     },
     root: {
         backgroundColor: '#ffffff',
-
-
+    },
+    menuitem: {
+        textAlign: 'left',
     }
 }));
 export default function InviteUser(props) {
@@ -147,10 +148,11 @@ export default function InviteUser(props) {
                         value={userData.role}
                         label="Role"
                         name="role"
+                        className={classes.menuitem}
                         onChange={handleUserData}
                     >
                         {rolesData && rolesData.map((item) => (
-                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                            <MenuItem className={classes.menuitem} key={item.id} value={item.id}>{item.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
