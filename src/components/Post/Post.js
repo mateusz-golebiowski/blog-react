@@ -165,7 +165,7 @@ export default function Post(props) {
                 });
         } else {
             createEditor(blocks);
-            createFile(img, 'default.jpg')
+            createFile(img, 'default.jpgn')
                 .then( file => {
                     setImageState(file);
                     setImageUrlState(URL.createObjectURL(file));

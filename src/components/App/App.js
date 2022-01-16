@@ -16,7 +16,7 @@ import ProfilePage from '../ProfilePage/ProfilePage';
 import Post from "../Post/Post";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import {signOut, isUserSignedIn, getUserToken} from "../../lib/user";
+import {signOut, isUserSignedIn, getUserToken, getTokenDecoded} from "../../lib/user";
 import Dashboard from "../Dashboard/Dashboard";
 import {IntlProvider} from 'react-intl'
 import pl from '../../locale/pl.json'
@@ -63,6 +63,9 @@ function App() {
         'en': en,
         'pl': pl
     }
+    const isAdmin = () => {
+        return isUserSignedIn() && getTokenDecoded().role.id === '1'
+    }
   return (
           <IntlProvider messages={getLanguage(state.language)} locale={state.language} defaultLocale="en">
               <MuiThemeProvider theme={theme}>
@@ -88,7 +91,7 @@ function App() {
                                   <Route path="/editPost/:id" component={Post} />
                                   <Route path="/signIn" render={(props)=><SignInPage userToken={userToken} setUserToken={setUserToken}/>}/>
                                   <Route path="/profile" component={ProfilePage} />
-                                  <Route path="/admin" component={Dashboard} />
+                                  {isAdmin() && <Route path="/admin" component={Dashboard} />}
                                   <Route path="/404" render={(props)=><>404</>}/>
                               </Switch>
                           </Router>

@@ -7,7 +7,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 
 import {signOut, getUserId, getUserToken, isUserSignedIn, getTokenDecoded} from '../../lib/user';
 
@@ -47,11 +47,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function BlogAppBar(props) {
     const intl = useIntl();
+    let history = useHistory();
 
     const classes = useStyles();
     const handleSignOut = () => {
         handleCloseMenu();
         signOut();
+        history.push('/')
         props.setUserToken('');
     };
     const [anchorEl, setAnchorEl] = useState(null);
@@ -112,7 +114,7 @@ export default function BlogAppBar(props) {
     };
 
     const addNewPostButton = () => {
-        if(props.userToken !== ''){
+        if(props.userToken !== '' && getTokenDecoded().role.id === '3'){
             return (
                 <NavLink to="/post" exact activeClassName="active">
                     <Button color="secondary" className={classes.button}>

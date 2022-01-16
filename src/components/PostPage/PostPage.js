@@ -13,7 +13,7 @@ import HeaderImage from "../HeaderImage/HeaderImage";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {NavLink} from 'react-router-dom';
-import {getUserToken, isUserSignedIn} from '../../lib/user';
+import {getTokenDecoded, getUserToken, isUserSignedIn} from '../../lib/user';
 import {useSnackbar} from 'notistack';
 
 import EmbedObject from '../EmbedObject/EmbedObject';
@@ -83,6 +83,7 @@ function PostPage(props) {
 
     const classes = styles();
     const [titleState, setTitleState] = useState('');
+    const [authorId, setAuthorId] = useState(0);
     const [image, setImage] = useState('');
     const [contentState, setContentState] = useState({blocks: []});
 
@@ -145,9 +146,7 @@ function PostPage(props) {
 
         }else if (item.type === 'Quote') {
             return (
-
                 <blockquote className={classes.quote} cite={item.data.caption}>{item.data.text}</blockquote>
-
         )
 
         }
@@ -157,7 +156,6 @@ function PostPage(props) {
        return contentState.blocks.map((item, key) => <span key={key}>{wrapper(item)}</span>);
     };
     useEffect(() => {
-        console.log(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
         fetch(`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/post/show/${props.match.params.id}`)
             .then(response => response.json())
             .then(data => {
@@ -165,6 +163,7 @@ function PostPage(props) {
                     setTitleState(data.title);
                     setImage(data.mainImage);
                     setContentState(JSON.parse(data.content));
+                    setAuthorId(data.user.id)
                 } else {
                     props.history.push(`/404`);
                 }
@@ -196,12 +195,15 @@ function PostPage(props) {
         });
     };
 
+    const isUserAuthor = () => {
+        return isUserSignedIn() && getTokenDecoded().id === authorId;
+    }
     return (
         <>
             <CssBaseline />
             <HeaderImage img={`${process.env.REACT_APP_SERVER_URL}:${process.env.REACT_APP_SERVER_PORT}/api/v1/image/${image}`} title={titleState}/>
             <Paper>
-                {isUserSignedIn() ? (
+                {isUserSignedIn() && isUserAuthor()? (
                     <Toolbar>
                         <NavLink to={`/editPost/${props.match.params.id}`} exact activeClassName="active">
                             <Button>
