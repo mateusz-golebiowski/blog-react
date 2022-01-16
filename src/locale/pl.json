@@ -23,6 +23,13 @@
   "app.post.edit": "Edytuj",
   "app.post.delete": "Usuń",
   "app.post.deleteSuccess": "Wpis został usunięty",
-  "app.post.deleteError": "Nie udało się usunąć wpisu"
+  "app.post.deleteError": "Nie udało się usunąć wpisu",
+  "app.comment.delete": "Komentarz został usunięty",
+  "app.comment.notDeleted": "Nie udało się usunąć komentarza",
+  "app.comment.added": "Komentarz został dodany",
+  "app.comment.notAdded": "Nie udało się dodać komentarza",
+  "app.comment.user": "Użytownik",
+  "app.comment.comment": "Komentarz",
+  "app.comment.comments": "Komentarze"
 
 }

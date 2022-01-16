@@ -23,6 +23,14 @@
   "app.post.edit": "Edit",
   "app.post.delete": "Delete",
   "app.post.deleteSuccess": "Article removed correctly",
-  "app.post.deleteError": "Error during removing article"
+  "app.post.deleteError": "Error during removing article,",
+  "app.comment.delete": "Comment deleted successfully",
+  "app.comment.notDeleted": "Error during deleting comment",
+  "app.comment.added": "Comment added successfully",
+  "app.comment.notAdded": "Error during adding comment",
+  "app.comment.user": "User",
+  "app.comment.comment": "Comment",
+  "app.comment.comments": "Comments"
+
 
 }
