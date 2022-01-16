@@ -49,6 +49,8 @@ export default function AddLanguage(props) {
         name: '',
         code: ''
     })
+    const { mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
+
     const addLanguage = async (e) => {
         e.preventDefault();
 
@@ -66,8 +68,7 @@ export default function AddLanguage(props) {
             body: JSON.stringify(data)
         })
         const result = await response.json()
-        console.log(result)
-
+        await mutate();
     };
     const handleLanguageData = (event) => {
         const {name, value} = event.target;
