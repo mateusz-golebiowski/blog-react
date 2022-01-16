@@ -1,21 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import Avatar from "@material-ui/core/Avatar";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import React, { useState} from 'react';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import {getUserToken, setUserToken} from "../../../lib/user";
+import {getUserToken} from "../../../lib/user";
 import {apiUrl, fetcher} from "../../../lib/config";
 import {makeStyles} from "@material-ui/core/styles";
 import useSWR from "swr";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -63,11 +53,10 @@ export default function AddLanguage(props) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'authorization': getUserToken()
-
             },
             body: JSON.stringify(data)
         })
-        const result = await response.json()
+        await response.json()
         await mutate();
     };
     const handleLanguageData = (event) => {

@@ -1,12 +1,7 @@
-import React, {useEffect, useState} from 'react';
-
-import Typography from '@material-ui/core/Typography';
-
+import React, {useState} from 'react';
 import List from '@material-ui/core/List'
 import {makeStyles} from '@material-ui/core/styles';
-
 import Drawer from '@material-ui/core/Drawer';
-
 import Toolbar from '@material-ui/core/Toolbar';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import TranslateIcon from '@material-ui/icons/Translate';
 import CategoryIcon from '@material-ui/icons/Category';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useHistory } from "react-router-dom";
 import Accounts from "./Accounts/Accounts";
 import Languages from "./Languages/Languages";
