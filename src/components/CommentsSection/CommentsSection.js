@@ -9,6 +9,7 @@ import InsertCommentIcon from '@material-ui/icons/InsertComment';
 import {useSnackbar} from 'notistack';
 import Pagination from '../Pagination/Pagination';
 import {getUserToken} from '../../lib/user';
+import {useIntl} from "react-intl";
 
 
 const styles = makeStyles(theme => ({
@@ -31,6 +32,8 @@ const styles = makeStyles(theme => ({
 }));
 
 const CommentsSection = (props) => {
+    const intl = useIntl();
+
     const classes = styles();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -93,10 +96,10 @@ const CommentsSection = (props) => {
             return response.json();
         }).then(function(data) {
             if(data.success) {
-                handleShowSnackbar('Komentarz został usunięty', 'success');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.comment.delete' }), 'success');
                 refreshComments();
             } else {
-                handleShowSnackbar('Nie udało się usunąć komentarza', 'error');
+                handleShowSnackbar(intl.formatMessage({ id: 'app.comment.notDeleted' }), 'error');
             }
 
         });
@@ -123,14 +126,14 @@ const CommentsSection = (props) => {
             }).then(function(data) {
 
                 if(data.success) {
-                    handleShowSnackbar('Komentarz został dodany', 'success');
+                    handleShowSnackbar(intl.formatMessage({ id: 'app.comment.added' }), 'success');
                     setContent('');
                     setEmail('');
                     setUsername('');
                     setPage(1);
                     refreshComments();
                 } else {
-                    handleShowSnackbar('Nie udało się dodać komentarza', 'error');
+                    handleShowSnackbar(intl.formatMessage({ id: 'app.comment.notAdded' }), 'error');
                 }
 
             });
@@ -145,8 +148,8 @@ const CommentsSection = (props) => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             className={classes.inputs}
-                            label="Użytkownik"
-                            placeholder="Użytkownik"
+                            label={intl.formatMessage({ id: 'app.comment.user' })}
+                            placeholder={intl.formatMessage({ id: 'app.comment.user' })}
                             variant="outlined"
                             required
                             value={username}
@@ -156,8 +159,8 @@ const CommentsSection = (props) => {
                     <Grid item xs={12} sm={6}>
                         <TextField
                             className={classes.inputs}
-                            label="Email"
-                            placeholder="Email"
+                            label={intl.formatMessage({ id: 'app.login.email' })}
+                            placeholder={intl.formatMessage({ id: 'app.login.email' })}
                             variant="outlined"
                             required
                             value={email}
@@ -168,8 +171,8 @@ const CommentsSection = (props) => {
                     <Grid item xs={12}>
                         <TextField
                             className={classes.inputs}
-                            label="Komentarz"
-                            placeholder="Komentarz"
+                            label={intl.formatMessage({ id: 'app.comment.comment' })}
+                            placeholder={intl.formatMessage({ id: 'app.comment.comment' })}
                             multiline
                             variant="outlined"
                             required
@@ -182,7 +185,7 @@ const CommentsSection = (props) => {
                     </Grid>
                 </Grid>
             </form>
-            <Typography variant={"h3"}>Komentarze</Typography>
+            <Typography variant={"h3"}>{intl.formatMessage({ id: 'app.comment.comments' })}</Typography>
             {comments.map((item, key)=><Comment onDelete={handleDelete} id={item.id} key={key} author={item.username} date={item.createdAt} content={item.content}/>)}
 
             <Pagination page={page} end={pages} onChangePage={handlePageChange} />
