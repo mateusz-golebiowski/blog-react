@@ -69,7 +69,7 @@ export default function AddCategories(props) {
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-                Add
+                Add Category
             </Typography>
             <form onSubmit={addCategory} className={classes.form}>
                 <TextField
@@ -93,7 +93,7 @@ export default function AddCategories(props) {
                     color="primary"
                     className={classes.submit}
                 >
-                  Add
+                  Add Category
                 </Button>
 
             </form>

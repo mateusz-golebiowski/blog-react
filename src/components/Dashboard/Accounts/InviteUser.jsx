@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -39,10 +39,10 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'left',
     }
 }));
-export default function InviteUser(props) {
+export default function InviteUser({editUser, onEdit}) {
     const classes = useStyles();
     const { data: rolesData  } = useSWR(`${apiUrl}/api/v1/user/getRoles`, fetcher)
-    const { data: mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
+    const { mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
     const { enqueueSnackbar } = useSnackbar();
 
     const [userData, setUserData] = useState({
@@ -51,14 +51,26 @@ export default function InviteUser(props) {
         firstName: '',
         lastName: '',
     })
+    useEffect(()=> {
+        if (editUser !== null) {
+            console.log(editUser)
+            setUserData({
+                email: editUser.email,
+                role: Number.parseInt(editUser.role.id),
+                firstName: editUser.firstName,
+                lastName: editUser.lastName,
+            })
+        }
+    }, [editUser])
     const inviteUser = async (e) => {
         e.preventDefault();
-
+        const method = editUser !== null ? 'put' : 'post'
         const data = {
             ...userData
         };
-        const response = await fetch(`${apiUrl}/api/v1/user/invite`, {
-            method: 'post',
+        const url = editUser !== null ?  editUser.id : 'invite'
+        const response = await fetch(`${apiUrl}/api/v1/user/${url}`, {
+            method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -78,10 +90,14 @@ export default function InviteUser(props) {
                 firstName: '',
                 lastName: '',
             })
+            if (editUser !== null) {
+                onEdit();
+            }
             await mutate()
         }
-
     };
+
+
     const handleUserData = (event) => {
         const {name, value} = event.target;
         const newData = {...userData};
