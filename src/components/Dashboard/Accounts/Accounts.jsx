@@ -15,6 +15,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import InviteUser from "./InviteUser";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton'
 
 
@@ -45,6 +46,7 @@ export default function Accounts(props) {
     const classes = useStyles();
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
     const [page, setPage] = React.useState(0);
+    const [editUserData, setEditUser] = React.useState(null);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (event, newPage) => {
@@ -70,6 +72,12 @@ export default function Accounts(props) {
       await response.json()
         mutate();
     };
+    const editUser = async (user) => {
+        setEditUser(user);
+    };
+    const clear = () => {
+        setEditUser(null);
+    }
 
     return (
         <>
@@ -114,6 +122,9 @@ export default function Accounts(props) {
                                                 })}
 
                                                 <TableCell>
+                                                    <IconButton onClick={() => editUser(row)}>
+                                                        <EditIcon/>
+                                                    </IconButton>
                                                     <IconButton onClick={() => removeUser(row.id)}>
                                                         <DeleteOutlineIcon/>
                                                     </IconButton>
@@ -134,7 +145,7 @@ export default function Accounts(props) {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     /></Paper>)}
                 </Typography>
-                <InviteUser/>
+                <InviteUser editUser={editUserData} onEdit={clear}/>
             </main>
         </>
     );
