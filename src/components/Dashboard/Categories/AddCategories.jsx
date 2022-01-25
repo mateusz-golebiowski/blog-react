@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -34,21 +34,30 @@ const useStyles = makeStyles(theme => ({
 
     }
 }));
-export default function AddCategories(props) {
+export default function AddCategories({editData, onEdit}) {
     const classes = useStyles();
     const [categoryData, setCategoryData] = useState({
         name: '',
     })
     const { mutate } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
-
+    useEffect(()=> {
+        if (editData !== null) {
+            setCategoryData({
+                name: editData.name
+            })
+        }
+    }, [editData])
     const addCategory = async (e) => {
         e.preventDefault();
+        const method = editData !== null ? 'put' : 'post'
 
         const data = {
             ...categoryData
         };
-        const response = await fetch(`${apiUrl}/api/v1/category`, {
-            method: 'post',
+        const url = editData !== null ?  editData.id : ''
+
+        const response = await fetch(`${apiUrl}/api/v1/category/${url}`, {
+            method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -58,6 +67,12 @@ export default function AddCategories(props) {
             body: JSON.stringify(data)
         })
         await response.json()
+        if (editData !== null) {
+            onEdit();
+        }
+        setCategoryData({
+            name: ''
+        })
         await mutate()
     };
     const handleCategoryData = (event) => {

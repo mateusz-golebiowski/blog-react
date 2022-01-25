@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import AddCategories from "./AddCategories";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import IconButton from '@material-ui/core/IconButton'
+import EditIcon from "@material-ui/icons/Edit";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +37,7 @@ export default function Categories(props) {
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [editData, setEdit] = React.useState(null);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -60,6 +62,13 @@ export default function Categories(props) {
         await response.json()
         await mutate();
     };
+
+    const edit = async (dataToEdit) => {
+        setEdit(dataToEdit);
+    };
+    const clear = () => {
+        setEdit(null);
+    }
 
     return (
         <>
@@ -105,6 +114,9 @@ export default function Categories(props) {
                                                 })}
 
                                                 <TableCell>
+                                                    <IconButton onClick={() => edit(row)}>
+                                                        <EditIcon/>
+                                                    </IconButton>
                                                     <IconButton onClick={() => removeUser(row.id)}>
                                                         <DeleteOutlineIcon/>
                                                     </IconButton>
@@ -125,7 +137,7 @@ export default function Categories(props) {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     /></Paper>)}
                 </Typography>
-                <AddCategories/>
+                <AddCategories editData={editData} onEdit={clear} />
             </main>
         </>
     );
