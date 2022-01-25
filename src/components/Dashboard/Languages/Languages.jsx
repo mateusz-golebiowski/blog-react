@@ -47,7 +47,7 @@ export default function Languages(props) {
         setPage(0);
     };
 
-    const removeUser = async (id) => {
+    const removelanguage = async (id) => {
         const response = await fetch(`${apiUrl}/api/v1/language/${id}`, {
             method: 'DELETE',
             headers: {
@@ -107,7 +107,7 @@ export default function Languages(props) {
                                                 })}
 
                                                 <TableCell>
-                                                    <IconButton onClick={() => removeUser(row.id)}>
+                                                    <IconButton onClick={() => removelanguage(row.id)}>
                                                         <DeleteOutlineIcon/>
                                                     </IconButton>
                                                 </TableCell>
