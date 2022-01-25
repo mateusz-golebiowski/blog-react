@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -33,22 +33,31 @@ const useStyles = makeStyles(theme => ({
 
     }
 }));
-export default function AddLanguage(props) {
+export default function AddLanguage({editData, onEdit}) {
     const classes = useStyles();
     const [languageData, setLanguageData] = useState({
         name: '',
         code: ''
     })
     const { mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
-
+    useEffect(()=> {
+        if (editData !== null) {
+            setLanguageData({
+                name: editData.name,
+                code: editData.code,
+            })
+        }
+    }, [editData])
     const addLanguage = async (e) => {
         e.preventDefault();
+        const method = editData !== null ? 'put' : 'post'
+        const url = editData !== null ?  editData.id : ''
 
         const data = {
             ...languageData
         };
-        const response = await fetch(`${apiUrl}/api/v1/language`, {
-            method: 'post',
+        const response = await fetch(`${apiUrl}/api/v1/language/${url}`, {
+            method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -57,6 +66,13 @@ export default function AddLanguage(props) {
             body: JSON.stringify(data)
         })
         await response.json()
+        if (editData !== null) {
+            onEdit();
+        }
+        setLanguageData({
+            name: '',
+            code: ''
+        })
         await mutate();
     };
     const handleLanguageData = (event) => {
