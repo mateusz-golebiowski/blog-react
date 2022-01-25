@@ -17,6 +17,7 @@ import TableRow from '@material-ui/core/TableRow';
 import AddLanguage from "./AddLanguage";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import IconButton from '@material-ui/core/IconButton'
+import EditIcon from "@material-ui/icons/Edit";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +38,7 @@ export default function Languages(props) {
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [editData, setEdit] = React.useState(null);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -62,7 +64,12 @@ export default function Languages(props) {
         mutate();
         console.log(result)
     };
-
+    const edit = async (dataToEdit) => {
+        setEdit(dataToEdit);
+    };
+    const clear = () => {
+        setEdit(null);
+    }
     return (
         <>
             <main className={classes.content}>
@@ -107,6 +114,9 @@ export default function Languages(props) {
                                                 })}
 
                                                 <TableCell>
+                                                    <IconButton onClick={() => edit(row)}>
+                                                        <EditIcon/>
+                                                    </IconButton>
                                                     <IconButton onClick={() => removelanguage(row.id)}>
                                                         <DeleteOutlineIcon/>
                                                     </IconButton>
@@ -127,7 +137,7 @@ export default function Languages(props) {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     /></Paper>)}
                 </Typography>
-                <AddLanguage/>
+                <AddLanguage  editData={editData} onEdit={clear}  />
             </main>
         </>
     );
