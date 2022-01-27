@@ -34,8 +34,17 @@
   "app.post.image": "Image",
   "app.post.save": "Save",
   "app.post.content": "Content",
-  "app.post.title": "Title"
-
-
+  "app.post.title": "Title",
+  "app.profile.repeat": "Repeat password",
+  "app.profile.newPassword": "New password",
+  "app.profile.oldPassword": "Old password",
+  "app.profile.passwordChange": "Password Change",
+  "app.profile.dataChange": "Email change",
+  "app.profile.personal": "Personal data",
+  "app.profile.name": "Firstname",
+  "app.profile.lastName": "Lastname",
+  "app.profile.userData": "User data",
+  "app.profile.failSave": "Fail during saving data",
+  "app.profile.success": "Profile updated successfully"
 
 }

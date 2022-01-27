@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { useSnackbar } from 'notistack';
+import {useIntl} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,6 +18,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProfilePage = (props) => {
+    const intl = useIntl();
+
     const classes = useStyles();
     const [firstnameState, setFirstnameState] = useState('');
     const [lastnameState, setLastnameState] = useState('');
@@ -91,13 +94,14 @@ const ProfilePage = (props) => {
                     setOldPasswordState('');
                     setNewPasswordHelperState('');
                     setOldPasswordHelperState('');
-                    handleShowSnackbar('Profil został zaktualizowany', 'success');
+                    handleShowSnackbar(intl.formatMessage({ id: 'app.profile.success' }), 'success');
                 } else {
                     handleShowSnackbar(`Błąd zapisu profilu. Powód: ${data.message}`, 'error');
                 }
             });
         } else {
-            handleShowSnackbar(`Nie udało się zapisać danych`, 'error');
+
+            handleShowSnackbar(intl.formatMessage({ id: 'app.profile.failSave' }), 'error');
         }
 
 
@@ -140,13 +144,13 @@ const ProfilePage = (props) => {
             {isSignedIn()}
             <Paper className={classes.root}>
                 <Typography variant="h6" gutterBottom>
-                    Dane Użytkownika
+                    {intl.formatMessage({ id: 'app.profile.userData' })}
                 </Typography>
                 <form onSubmit={handleFormSubmit}>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
                             <Typography align={'left'} variant="h6" gutterBottom>
-                                Dane podstawowe
+                                {intl.formatMessage({ id: 'app.profile.personal' })}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -154,7 +158,7 @@ const ProfilePage = (props) => {
                                 value={firstnameState}
                                 id="firstName"
                                 name="firstName"
-                                label="Imię"
+                                label={intl.formatMessage({ id: 'app.profile.name' })}
                                 fullWidth
                                 autoComplete="fname"
                                 onChange={e => {setFirstnameState(e.target.value)}}
@@ -165,7 +169,7 @@ const ProfilePage = (props) => {
                                 value={lastnameState}
                                 id="lastName"
                                 name="lastName"
-                                label="Nazwisko"
+                                label={intl.formatMessage({ id: 'app.profile.lastName' })}
                                 fullWidth
                                 autoComplete="lname"
                                 onChange={e => {setLastnameState(e.target.value)}}
@@ -173,7 +177,7 @@ const ProfilePage = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography align={'left'} variant="h6" gutterBottom>
-                                Zmiana nazwy użytkownika i adresu email
+                                {intl.formatMessage({ id: 'app.profile.dataChange' })}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -182,7 +186,7 @@ const ProfilePage = (props) => {
                                 value={emailState}
                                 id="email"
                                 name="email"
-                                label="Email"
+                                label={intl.formatMessage({ id: 'app.login.email' })}
                                 fullWidth
                                 error={validateEmail()}
                                 autoComplete="email"
@@ -191,7 +195,7 @@ const ProfilePage = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography align={'left'} variant="h6" gutterBottom>
-                                Zmiana hasła
+                                {intl.formatMessage({ id: 'app.profile.passwordChange' })}
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -199,7 +203,7 @@ const ProfilePage = (props) => {
                                 value={oldPasswordState}
                                 fullWidth
                                 name="oldPassword"
-                                label="Stare Hasło"
+                                label={intl.formatMessage({ id: 'app.profile.oldPassword' })}
                                 type="password"
                                 id="oldPassword"
                                 autoComplete="password"
@@ -216,7 +220,7 @@ const ProfilePage = (props) => {
                                 value={newPasswordState}
                                 fullWidth
                                 name="password"
-                                label="Nowe Hasło"
+                                label={intl.formatMessage({ id: 'app.profile.newPassword' })}
                                 type="password"
                                 id="password"
                                 autoComplete="password"
@@ -233,7 +237,7 @@ const ProfilePage = (props) => {
                                 value={repeatPasswordState}
                                 fullWidth
                                 name="repeatPassword"
-                                label="Powtórz Hasło"
+                                label={intl.formatMessage({ id: 'app.profile.repeat' })}
                                 type="password"
                                 id="repeatPassword"
                                 autoComplete="password"
@@ -252,7 +256,7 @@ const ProfilePage = (props) => {
                                 variant={"contained"}
                                 color={"primary"}
                             >
-                                Zapisz
+                                {intl.formatMessage({ id: 'app.post.save' })}
                             </Button>
                         </Grid>
                     </Grid>

@@ -34,7 +34,18 @@
   "app.post.image": "Obraz",
   "app.post.save": "Zapisz",
   "app.post.content": "Treść wpisu",
-  "app.post.title": "Tytuł"
+  "app.post.title": "Tytuł",
+  "app.profile.repeat": "Powtórz hasło",
+  "app.profile.newPassword": "Nowe hasło",
+  "app.profile.oldPassword": "Stare hasło",
+  "app.profile.passwordChange": "Zmiana hasła",
+  "app.profile.dataChange": "Zmiana adresu email",
+  "app.profile.personal": "Dane personalne",
+  "app.profile.name": "Imię",
+  "app.profile.lastName": "Nazwisko",
+  "app.profile.userData": "Dane użytkownika",
+  "app.profile.failSave": "Nie udało się zapisać danych",
+  "app.profile.success": "Profil został zaktualizowany"
 
 
 }
