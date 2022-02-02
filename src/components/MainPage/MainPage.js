@@ -146,7 +146,7 @@ function MainPage(props) {
     const [ state ] = React.useContext(LanguageContext)
 
     const { data: postsData } = useSWR(filterState.trim() === '' ? `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}`: `${apiUrl}/api/v1/post/getAll/${state.language}/${page}?category=${category}&title=${filterState.trim()}`, userFetcher)
-    const { data: categoriesData } = useSWR(`${apiUrl}/api/v1/category`, userFetcher)
+    const { data: categoriesData } = useSWR(`${apiUrl}/api/v1/category?lang=${state.language}`, userFetcher)
 
     const updatePage = (page) => {
         props.history.push(`/page/${page}`);
