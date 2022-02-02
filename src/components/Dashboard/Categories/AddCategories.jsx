@@ -6,6 +6,7 @@ import {getUserToken} from "../../../lib/user";
 import {apiUrl, fetcher} from "../../../lib/config";
 import {makeStyles} from "@material-ui/core/styles";
 import useSWR from "swr";
+import {useIntl} from "react-intl";
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,9 +36,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export default function AddCategories({editData, onEdit}) {
+    const intl = useIntl();
+
     const classes = useStyles();
+    const { data: languageData } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
+
     const [categoryData, setCategoryData] = useState({
         name: '',
+        languageData: []
     })
     const { mutate } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
     useEffect(()=> {
@@ -81,6 +87,30 @@ export default function AddCategories({editData, onEdit}) {
         newData[name] = value
         setCategoryData(newData)
     }
+
+    const handleLanguageData = (event) => {
+        const {name, value} = event.target;
+
+        const newData = {...categoryData};
+        const found = categoryData.languageData.findIndex(item => item.code === name);
+        if (found !== -1) {
+            console.log(value)
+            newData.languageData[found] = {code: newData.languageData[found].code, value: value};
+        } else {
+            newData.languageData.push({code: name, value: value});
+        }
+        setCategoryData(newData)
+    }
+    const getValueLang = (code) => {
+        if (categoryData.languageData){
+            const found = categoryData.languageData.find(item => item.code === code);
+            if (found) {
+                return found.value;
+            }
+        }
+
+        return ''
+    }
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
@@ -100,7 +130,21 @@ export default function AddCategories({editData, onEdit}) {
                     value={categoryData.name}
                     onChange={handleCategoryData}
                 />
-
+                <Typography component="h4" variant="h6">
+                    {intl.formatMessage({ id: 'app.addCategories.languages' })}
+                </Typography>
+                {languageData && languageData.map((item) => (
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        label={item.name}
+                        name={item.code}
+                        value={getValueLang(item.code)}
+                        onChange={handleLanguageData}
+                    />
+                ))}
                 <Button
                     type="submit"
                     fullWidth
