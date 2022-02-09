@@ -17,6 +17,7 @@ import InviteUser from "./InviteUser";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton'
+import {useIntl} from "react-intl";
 
 
 
@@ -28,22 +29,25 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const columns = [
-    { id: 'firstName', label: 'Name', minWidth: 170 },
-    { id: 'lastName', label: 'last name', minWidth: 100 },
-    {
-        id: 'email',
-        label: 'email',
-    },
-    {
-        id: 'role',
-        label: 'role',
-        format: (value) => value.name
-    }
-];
 
 export default function Accounts(props) {
     const classes = useStyles();
+    const intl = useIntl();
+
+    const columns = [
+        { id: 'firstName', label: intl.formatMessage({ id: 'app.profile.name' }), minWidth: 170 },
+        { id: 'lastName',  label: intl.formatMessage({ id: 'app.profile.lastName' }), minWidth: 100 },
+        {
+            id: 'email',
+            label: intl.formatMessage({ id: 'app.login.email' }),
+        },
+        {
+            id: 'role',
+            label: intl.formatMessage({ id: 'app.profile.role' }),
+            format: (value) => value.name
+        }
+    ];
+
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
     const [page, setPage] = React.useState(0);
     const [editUserData, setEditUser] = React.useState(null);
@@ -100,7 +104,7 @@ export default function Accounts(props) {
 
                                     <TableCell
                                     >
-                                        Options
+                                        {intl.formatMessage({ id: 'app.admin.options' })}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

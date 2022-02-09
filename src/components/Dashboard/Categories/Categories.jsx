@@ -18,6 +18,7 @@ import AddCategories from "./AddCategories";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from "@material-ui/icons/Edit";
+import {useIntl} from "react-intl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +29,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-];
+
 
 export default function Categories(props) {
+    const intl = useIntl();
+    const columns = [
+        { id: 'name', label: intl.formatMessage({ id: 'app.admin.name' }), minWidth: 170 },
+    ];
     const classes = useStyles();
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
     const [page, setPage] = React.useState(0);
@@ -91,7 +94,7 @@ export default function Categories(props) {
 
                                     <TableCell
                                     >
-                                        Options
+                                        { intl.formatMessage({ id: 'app.admin.options' })}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

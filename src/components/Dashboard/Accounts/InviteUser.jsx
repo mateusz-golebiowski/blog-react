@@ -11,6 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {useSnackbar} from "notistack";
+import {useIntl} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -40,6 +41,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export default function InviteUser({editUser, onEdit}) {
+    const intl = useIntl();
+
     const classes = useStyles();
     const { data: rolesData  } = useSWR(`${apiUrl}/api/v1/user/getRoles`, fetcher)
     const { mutate } = useSWR(`${apiUrl}/api/v1/user/getAllData`, fetcher)
@@ -107,7 +110,7 @@ export default function InviteUser({editUser, onEdit}) {
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-                Invite
+                {editUser === null ? intl.formatMessage({ id: 'app.admin.invite' }) : intl.formatMessage({ id: 'app.admin.edit' })}
             </Typography>
             <form onSubmit={inviteUser} className={classes.form}>
                 <TextField
@@ -116,7 +119,7 @@ export default function InviteUser({editUser, onEdit}) {
                     required
                     fullWidth
                     id="email"
-                    label="Email"
+                    label={intl.formatMessage({ id: 'app.login.email' }) }
                     type={'email'}
                     name="email"
                     autoComplete="email"
@@ -130,7 +133,7 @@ export default function InviteUser({editUser, onEdit}) {
                     required
                     fullWidth
                     id="firstName"
-                    label="firstName"
+                    label={intl.formatMessage({ id: 'app.profile.name' }) }
                     name="firstName"
                     autoComplete="firstName"
                     autoFocus
@@ -143,7 +146,7 @@ export default function InviteUser({editUser, onEdit}) {
                     required
                     fullWidth
                     id="lastName"
-                    label="lastName"
+                    label={intl.formatMessage({ id: 'app.profile.lastName' }) }
                     name="lastName"
                     autoComplete="lastName"
                     autoFocus
@@ -156,7 +159,7 @@ export default function InviteUser({editUser, onEdit}) {
                         labelId="role"
                         id="role"
                         value={userData.role}
-                        label="Role"
+                        label={intl.formatMessage({ id: 'app.profile.role' }) }
                         name="role"
                         className={classes.menuitem}
                         onChange={handleUserData}
@@ -174,7 +177,7 @@ export default function InviteUser({editUser, onEdit}) {
                     color="primary"
                     className={classes.submit}
                 >
-                  Invite
+                    {editUser === null ? intl.formatMessage({ id: 'app.admin.invite' }) : intl.formatMessage({ id: 'app.admin.edit' })}
                 </Button>
 
             </form>

@@ -114,7 +114,7 @@ export default function AddCategories({editData, onEdit}) {
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-                Add Category
+                {editData === null ? intl.formatMessage({ id: 'app.admin.add' }) : intl.formatMessage({ id: 'app.admin.edit' })}
             </Typography>
             <form onSubmit={addCategory} className={classes.form}>
                 <TextField
@@ -123,7 +123,7 @@ export default function AddCategories({editData, onEdit}) {
                     required
                     fullWidth
                     id="name"
-                    label="Name"
+                    label={intl.formatMessage({ id: 'app.admin.name' })}
                     name="name"
                     autoComplete="name"
                     autoFocus
@@ -152,7 +152,7 @@ export default function AddCategories({editData, onEdit}) {
                     color="primary"
                     className={classes.submit}
                 >
-                  Add Category
+                    {editData === null ? intl.formatMessage({ id: 'app.admin.add' }) : intl.formatMessage({ id: 'app.admin.edit' })}
                 </Button>
 
             </form>
