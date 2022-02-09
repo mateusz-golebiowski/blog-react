@@ -6,6 +6,7 @@ import {getUserToken} from "../../../lib/user";
 import {apiUrl, fetcher} from "../../../lib/config";
 import {makeStyles} from "@material-ui/core/styles";
 import useSWR from "swr";
+import {useIntl} from "react-intl";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -35,6 +36,8 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function AddLanguage({editData, onEdit}) {
     const classes = useStyles();
+    const intl = useIntl();
+
     const [languageData, setLanguageData] = useState({
         name: '',
         code: ''
@@ -84,7 +87,7 @@ export default function AddLanguage({editData, onEdit}) {
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
-                Add
+                {editData === null ? intl.formatMessage({ id: 'app.admin.add' }) : intl.formatMessage({ id: 'app.admin.edit' })}
             </Typography>
             <form onSubmit={addLanguage} className={classes.form}>
                 <TextField
@@ -93,7 +96,7 @@ export default function AddLanguage({editData, onEdit}) {
                     required
                     fullWidth
                     id="name"
-                    label="Name"
+                    label={intl.formatMessage({ id: 'app.admin.name' })}
                     name="name"
                     autoComplete="name"
                     autoFocus
@@ -106,7 +109,7 @@ export default function AddLanguage({editData, onEdit}) {
                     required
                     fullWidth
                     id="code"
-                    label="Code"
+                    label={intl.formatMessage({ id: 'app.admin.code' })}
                     name="code"
                     autoComplete="code"
                     autoFocus
@@ -121,7 +124,7 @@ export default function AddLanguage({editData, onEdit}) {
                     color="primary"
                     className={classes.submit}
                 >
-                  Add
+                    {editData === null ? intl.formatMessage({ id: 'app.admin.add' }) : intl.formatMessage({ id: 'app.admin.edit' })}
                 </Button>
 
             </form>

@@ -18,6 +18,7 @@ import AddLanguage from "./AddLanguage";
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import IconButton from '@material-ui/core/IconButton'
 import EditIcon from "@material-ui/icons/Edit";
+import {useIntl} from "react-intl";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,12 +29,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'Code', minWidth: 100 },
-];
 
 export default function Languages(props) {
+    const intl = useIntl();
+    const columns = [
+        { id: 'name', label:  intl.formatMessage({ id: 'app.admin.name' }), minWidth: 170 },
+        { id: 'code', label:  intl.formatMessage({ id: 'app.admin.code' }), minWidth: 100 },
+    ];
+
     const classes = useStyles();
     const { data, mutate } = useSWR(`${apiUrl}/api/v1/language`, fetcher)
     const [page, setPage] = React.useState(0);
@@ -91,7 +94,7 @@ export default function Languages(props) {
 
                                     <TableCell
                                     >
-                                        Options
+                                        { intl.formatMessage({ id: 'app.admin.options' })}
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

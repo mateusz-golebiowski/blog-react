@@ -43,8 +43,19 @@
   "app.profile.personal": "Personal data",
   "app.profile.name": "Firstname",
   "app.profile.lastName": "Lastname",
+  "app.profile.role": "Role",
   "app.profile.userData": "User data",
   "app.profile.failSave": "Fail during saving data",
-  "app.profile.success": "Profile updated successfully"
+  "app.profile.success": "Profile updated successfully",
+  "app.admin.options": "Options",
+  "app.admin.invite": "Invite",
+  "app.admin.edit": "Edit",
+  "app.admin.add": "Add",
+  "app.admin.name": "Name",
+  "app.admin.code": "Code",
+  "app.addCategories.languages": "Languages"
+
+
+
 
 }

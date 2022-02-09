@@ -43,9 +43,17 @@
   "app.profile.personal": "Dane personalne",
   "app.profile.name": "Imię",
   "app.profile.lastName": "Nazwisko",
+  "app.profile.role": "Rola",
   "app.profile.userData": "Dane użytkownika",
   "app.profile.failSave": "Nie udało się zapisać danych",
-  "app.profile.success": "Profil został zaktualizowany"
+  "app.profile.success": "Profil został zaktualizowany",
+  "app.admin.options": "Opcje",
+  "app.admin.invite": "Zaproś",
+  "app.admin.edit": "Edytuj",
+  "app.admin.add": "Dodaj",
+  "app.admin.name": "Nazwa",
+  "app.admin.code": "Kod",
+  "app.addCategories.languages": "Języki"
 
 
 }
