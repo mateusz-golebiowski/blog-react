@@ -53,7 +53,9 @@
   "app.admin.add": "Dodaj",
   "app.admin.name": "Nazwa",
   "app.admin.code": "Kod",
-  "app.addCategories.languages": "Języki"
+  "app.addCategories.languages": "Języki",
+  "app.main.next": "Następna strona",
+  "app.main.back": "Poprzednia strona"
 
 
 }

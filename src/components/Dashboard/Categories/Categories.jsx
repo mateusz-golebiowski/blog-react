@@ -37,7 +37,7 @@ export default function Categories(props) {
         { id: 'name', label: intl.formatMessage({ id: 'app.admin.name' }), minWidth: 170 },
     ];
     const classes = useStyles();
-    const { data, mutate } = useSWR(`${apiUrl}/api/v1/category`, fetcher)
+    const { data, mutate } = useSWR(`${apiUrl}/api/v1/category?all=true`, fetcher)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [editData, setEdit] = React.useState(null);

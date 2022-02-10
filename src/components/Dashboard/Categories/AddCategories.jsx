@@ -49,8 +49,11 @@ export default function AddCategories({editData, onEdit}) {
     useEffect(()=> {
         if (editData !== null) {
             setCategoryData({
-                name: editData.name
+                name: editData.name,
+                languageData: editData.languageData
             })
+            console.log('editData')
+            console.log(categoryData)
         }
     }, [editData])
     const addCategory = async (e) => {
@@ -77,7 +80,9 @@ export default function AddCategories({editData, onEdit}) {
             onEdit();
         }
         setCategoryData({
-            name: ''
+            name: '',
+            languageData: []
+
         })
         await mutate()
     };
@@ -90,11 +95,11 @@ export default function AddCategories({editData, onEdit}) {
 
     const handleLanguageData = (event) => {
         const {name, value} = event.target;
+        console.log(categoryData)
 
         const newData = {...categoryData};
         const found = categoryData.languageData.findIndex(item => item.code === name);
         if (found !== -1) {
-            console.log(value)
             newData.languageData[found] = {code: newData.languageData[found].code, value: value};
         } else {
             newData.languageData.push({code: name, value: value});
@@ -102,8 +107,9 @@ export default function AddCategories({editData, onEdit}) {
         setCategoryData(newData)
     }
     const getValueLang = (code) => {
-        if (categoryData.languageData){
+        if (categoryData.languageData.length > 0){
             const found = categoryData.languageData.find(item => item.code === code);
+            console.log(found)
             if (found) {
                 return found.value;
             }
