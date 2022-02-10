@@ -6,6 +6,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
 import {makeStyles} from '@material-ui/core/styles';
+import {useIntl} from "react-intl";
 
 
 const styles = makeStyles(theme => ({
@@ -17,6 +18,7 @@ const styles = makeStyles(theme => ({
 
 const Pagination = (props) => {
     const classes = styles();
+    const intl = useIntl();
 
 
     const handlePageChange = (e) => {
@@ -49,14 +51,14 @@ const Pagination = (props) => {
                         <FirstPage />
                     </Button>
                     <Button size="small" onClick={handleBack} disabled={props.page-1===0}>
-                        Back
                         <KeyboardArrowLeft />
+                        {intl.formatMessage({ id: 'app.main.back' })}
                     </Button>
                     {
                         creatPages()
                     }
                     <Button size="small" onClick={handleNext} disabled={props.page===props.end}>
-                        Next
+                        {intl.formatMessage({ id: 'app.main.next' })}
                         <KeyboardArrowRight />
                     </Button>
                     <Button size="small" onClick={()=>handlePageChange(props.end)}>
