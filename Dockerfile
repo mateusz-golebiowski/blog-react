@@ -2,10 +2,10 @@ FROM node:lts-slim as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY package-lock.json /app/package-lock.json
 RUN yarn
 COPY . /app
-RUN yarn build
+RUN npm run build
 
 # production environment
 FROM nginx:1.16.0-alpine
